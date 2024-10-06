@@ -1,0 +1,57 @@
+# Ignore virtual environment
+envir/
+
+# Ignore Python compiled files
+*.pyc
+__pycache__/
+
+# SQLite database files
+db.sqlite3
+db.sqlite3-journal
+
+# Django log files
+*.log
+
+# Ignore backups and dump files
+*.sql
+*.dump
+
+# Local development settings
+#It allows you to separate environment-specific settings from your
+# main settings.py file. This is useful for keeping sensitive
+# information (like API keys or database passwords) out of version control.
+local_settings.py
+
+# Django static files collected for deployment
+staticfiles/
+
+# Media files uploaded by users (if you need to version user files, you might want to remove this)
+media/
+
+# Ignore environment variables file
+.env
+
+# Ignore psycopg2-binary and PostgreSQL files (if any specific files)
+*.so  # Shared object files, often used for compiled libraries
+*.dll  # Windows dynamic-link library files
+
+# [
+# OS generated files
+# macOS
+.DS_Store
+# Windows
+Thumbs.db
+# ]
+
+
+# [
+# Ignore editor configurations (optional)
+# Visual Studio Code
+.vscode/
+# PyCharm
+.idea/
+# Sublime Text project file
+*.sublime-project
+# Sublime Text workspace file
+*.sublime-workspace
+# ]
