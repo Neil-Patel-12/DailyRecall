@@ -57,19 +57,52 @@ Before setting up the project, ensure you have the following installed on your m
 
 This guide walks you through setting up the **DailyRecall** project on your local machine.
 
+1. First clone the repo and move into the folder
+
+```bash
+git clone <DailyRecall-url>
+cd DailyRecall
+```
+
 ## Directory Structure & Installation
 
-1. **Navigate to the following directory:**
+2. **Navigate to the following directory (root address)**
+
+   ```bash
+   C:\Users\<your-name>\...\DailyRecall>
+   ```
+
+3. **Setup Virtual Environment:**
+
+   - Create a virtual environment:
+
+     ```bash
+     python -m venv envir
+     ```
+
+   - Activate the virtual environment:
+
+     ```bash
+     .\envir\Scripts\activate
+     ```
+
+   - remember to active this virtual environment everytime you work on the backend
+
+## Django Backend Setup
+
+4. **Navigate to the server directory:**
+
    ```bash
    C:\Users\<'your name'>\...\DailyRecall\DailyRecall_server>
    ```
-2. **Install Django packages:**
+
+5. **Install required backend packages using the requirements.txt file:**
 
    ```bash
    pip install -r requirements.txt
    ```
 
-3. **Setup Frontend:**
+6. **Setup Frontend:**
 
    - First, change directory to the client folder:
 
@@ -88,33 +121,7 @@ This guide walks you through setting up the **DailyRecall** project on your loca
      cd..
      ```
 
-4. **Setup Virtual Environment:**
-
-   - Create a virtual environment:
-
-     ```bash
-     python -m venv envir
-     ```
-
-   - Activate the virtual environment:
-     ```bash
-     .\envir\Scripts\activate
-     ```
-
    > **Note**: Always keep the virtual environment activated when working on the backend to avoid package conflicts.
-
-## Django Backend Setup
-
-1. **Navigate to the server directory:**
-
-   ```bash
-   cd DailyRecall_server
-   ```
-
-2. **Install required backend packages using the requirements.txt file:**
-   ```bash
-   pip install -r requirements.txt
-   ```
 
 ## PostgreSQL Setup
 
