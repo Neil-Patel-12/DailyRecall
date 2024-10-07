@@ -86,7 +86,7 @@ cd DailyRecall
      .\envir\Scripts\activate
      ```
 
-   - remember to active this virtual environment everytime you work on the backend
+   > **Note**: Always keep the virtual environment activated when working on the backend to avoid package conflicts.
 
 ## Django Backend Setup
 
