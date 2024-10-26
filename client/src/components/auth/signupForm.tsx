@@ -9,8 +9,12 @@ import { Fields } from "@/components/auth/accountField";
 import axios from "axios";
 
 const signupSchema = z.object({
-  firstName: z.string(),
-  lastName: z.string(),
+  firstName: z.string().min(1, {
+    message: "Please enter your first name",
+  }),
+  lastName: z.string().min(1, {
+    message: "Please enter your last name",
+  }),
   email: z.string().email({ message: "Please enter a valid email." }),
   username: z.string().min(6, {
     message: "Username must be at least 6 characters.",
@@ -50,7 +54,7 @@ export const SignupForm = () => {
   const onSubmit = async (user: z.infer<typeof signupSchema>) => {
     console.log(user);
     try {
-      const response = await axios.post(
+      await axios.post(
         "http://localhost:5000/api/user/signup",
         user,
         {
