@@ -66,7 +66,7 @@ INSTALLED_APPS = [
     'corsheaders',     # CORS headers for cross-origin requests
 ]
 
-CORS_ALLOWED_ORIGINS = ['http://localhost:5173']
+CORS_ALLOWED_ORIGINS = ['http://localhost:3000']
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

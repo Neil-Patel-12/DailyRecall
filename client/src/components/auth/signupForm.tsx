@@ -55,7 +55,7 @@ export const SignupForm = () => {
     console.log(user);
     try {
       await axios.post(
-        "http://localhost:5000/api/user/signup",
+        "http://localhost:8000/api/user/register",
         user,
         {
           withCredentials: true,
