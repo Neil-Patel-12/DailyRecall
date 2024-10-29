@@ -54,13 +54,9 @@ export const SignupForm = () => {
   const onSubmit = async (user: z.infer<typeof signupSchema>) => {
     console.log(user);
     try {
-      await axios.post(
-        "http://localhost:8000/api/user/register",
-        user,
-        {
-          withCredentials: true,
-        }
-      );
+      await axios.post("http://127.0.0.1:8000/api/user/register", user, {
+        withCredentials: true,
+      });
     } catch (err) {
       if (axios.isAxiosError(err)) {
         const errors = err.response?.data.errors;
