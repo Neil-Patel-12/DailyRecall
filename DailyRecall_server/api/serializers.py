@@ -6,22 +6,34 @@ from .models import User_Post
 # django users uses ORM
 # from out API, we will be accepting JSON data
 
+
 class UserSerializer(serializers.ModelSerializer):
+    firstName = serializers.CharField(source="first_name")
+    lastName = serializers.CharField(source="last_name")
+    email = serializers.EmailField(required=True)
+
     class Meta:
         model = User
-        fields = ["id", "username", "password"]
+        fields = ["id", "username", "password",
+                  "email", "firstName", "lastName"]
         extra_kwargs = {"password": {"write_only": True}}
 
     def create(self, validated_data):
-        user = User.objects.create_user(**validated_data)
+        first_name = validated_data.pop("first_name")
+        last_name = validated_data.pop("last_name")
+        user = User.objects.create_user(
+            first_name=first_name, last_name=last_name, **validated_data
+        )
         return user
 
 # when our model is create, we need to create a serializer for this model
 # because remember, this is an api. And we need to be able to convert this into JSON
 # data, so that we can recieve it, and return it.
 
+
 class User_PostSerializer(serializers.ModelSerializer):
     class Meta:
         model = User_Post
-        fields = ["id", "subject", "topic", "mastery", "content", "author", "date_posted"]
+        fields = ["id", "subject", "topic", "mastery",
+                  "content", "author", "date_posted"]
         extra_kwargs = {"author": {"read_only": True}}

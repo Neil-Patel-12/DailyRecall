@@ -40,3 +40,4 @@ class CreateUserView(generics.CreateAPIView):
     # tells this view what kind of data we need to accept to make a new user (username, password)
     serializer_class = UserSerializer # connecting out Auth routes
     permission_classes = [AllowAny] # who is allowd to use this
+    
