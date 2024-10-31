@@ -59,7 +59,7 @@ export const SignupForm = () => {
       });
     } catch (err) {
       if (axios.isAxiosError(err)) {
-        const errors = err.response?.data.errors;
+        const errors = err.response?.data;
         console.log(errors);
       }
     }
