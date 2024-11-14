@@ -8,7 +8,7 @@ import { useForm } from "react-hook-form";
 import { Fields } from "@/components/auth/accountField";
 import axios from "axios";
 
-const signupSchema = z.object({
+export const signupSchema = z.object({
   firstName: z.string().min(1, {
     message: "Please enter your first name",
   }),
