@@ -7,6 +7,8 @@ import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { Fields } from "@/components/auth/accountField";
 import axios from "axios";
+import useAuth from "@/contexts/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 export const signupSchema = z.object({
   firstName: z.string().min(1, {
@@ -40,6 +42,9 @@ const signupItems = [
 ];
 
 export const SignupForm = () => {
+  const { signup } = useAuth();
+  const navigate = useNavigate();
+  
   const form = useForm<z.infer<typeof signupSchema>>({
     resolver: zodResolver(signupSchema),
     defaultValues: {
@@ -52,12 +57,9 @@ export const SignupForm = () => {
   });
 
   const onSubmit = async (user: z.infer<typeof signupSchema>) => {
-    console.log(user);
     try {
-      const response = await axios.post("http://127.0.0.1:8000/api/user/register/", user, {
-        withCredentials: true,
-      });
-      console.log(response.data);
+      await signup(user);
+      navigate("/home");
     } catch (err) {
       if (axios.isAxiosError(err)) {
         const errors = err.response?.data;

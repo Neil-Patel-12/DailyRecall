@@ -7,6 +7,8 @@ import { z } from "zod";
 import { Form } from "../ui/form";
 import { Fields } from "./accountField";
 import { Button } from "../ui/button";
+import { useNavigate } from "react-router-dom";
+import useAuth from "@/contexts/AuthContext";
 
 export const loginSchema = z.object({
   email: z.string().email({ message: "Please enter a valid email." }),
@@ -19,6 +21,9 @@ const loginItems = [
 ];
 
 export const LoginForm = () => {
+  const { login } = useAuth();
+  const navigate = useNavigate();
+  
   const form = useForm<z.infer<typeof loginSchema>>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
@@ -27,18 +32,10 @@ export const LoginForm = () => {
     },
   });
 
-  // change the api call
   const onSubmit = async (user: z.infer<typeof loginSchema>) => {
-    console.log(user);
     try {
-      const response = await axios.post(
-        "http://127.0.0.1:8000/api/user/register/",
-        user,
-        {
-          withCredentials: true,
-        }
-      );
-      console.log(response.data);
+      await login(user);
+      navigate("/home");
     } catch (err) {
       if (axios.isAxiosError(err)) {
         const errors = err.response?.data;

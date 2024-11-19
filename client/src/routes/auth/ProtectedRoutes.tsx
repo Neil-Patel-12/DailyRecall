@@ -1,12 +1,11 @@
 // ProtectedRoute.tsx
 
 import { ReactNode } from "react";
+import useAuth from "@/contexts/AuthContext";
+import { Navigate } from "react-router-dom";
 
+export const PrivateRoute = ({ children }: { children: ReactNode }) => {
+  const { user } = useAuth();
 
-export const PrivateRoute = ({children}: {children: ReactNode}) => {
-    
-    return (
-        {}
-    );
-    
-}
+  return user ? children : <Navigate to="/login" />;
+};

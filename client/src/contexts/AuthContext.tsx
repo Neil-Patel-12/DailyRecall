@@ -2,9 +2,11 @@
 
 import { loginSchema } from "@/components/auth/loginForm";
 import { signupSchema } from "@/components/auth/signupForm";
+import axios from "axios";
 import { createContext, ReactNode, useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { z } from "zod";
+import { jwtDecode } from "jwt-decode";
 
 export interface User {
   id: number;
@@ -17,9 +19,13 @@ export interface User {
 export type AuthContextType = {
   user: User | null;
   setUser: React.Dispatch<React.SetStateAction<User | null>>;
-  signup: (user: z.infer<typeof signupSchema>) => Promise<void>;
-  login: (user: z.infer<typeof loginSchema>) => Promise<void>;
+  signup: (user: z.infer<typeof signupSchema>) => Promise<User | null>;
+  login: (user: z.infer<typeof loginSchema>) => Promise<User | null>;
   logout: () => void;
+};
+
+type CustomJwtPayload = {
+  UserInfo: User;
 };
 
 export const AuthContext = createContext<AuthContextType | undefined>(
@@ -40,12 +46,64 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     navigate("/home");
   };
 
-  const signup = async () => {
-    navigate("/home");
+  const signup = async (user: z.infer<typeof signupSchema>) => {
+    try {
+      const response = await axios.post(
+        "http://127.0.0.1:8000/api/user/register/",
+        user,
+        {
+          withCredentials: true,
+        }
+      );
+      const token = response.data.accessToken;
+      const decoded = jwtDecode<CustomJwtPayload>(token);
+      console.log(decoded);
+      const userData: User = decoded.UserInfo;
+
+      setUser(userData);
+
+      localStorage.setItem("user", JSON.stringify(userData));
+      localStorage.setItem("accessToken", token);
+      return response.data;
+    } catch (err) {
+      if (axios.isAxiosError(err)) {
+        console.error(err.response?.data);
+        throw err;
+      } else {
+        console.error("Unexpected error:", err);
+        throw err;
+      }
+    }
   };
 
-  const login = async () => {
-    navigate("/home");
+  const login = async (user: z.infer<typeof loginSchema>) => {
+    try {
+      const response = await axios.post(
+        "http://127.0.0.1:8000/api/user/login/",
+        user,
+        {
+          withCredentials: true,
+        }
+      );
+      const token = response.data.accessToken;
+      const decoded = jwtDecode<CustomJwtPayload>(token);
+      console.log(decoded);
+      const userData: User = decoded.UserInfo;
+
+      setUser(userData);
+
+      localStorage.setItem("user", JSON.stringify(userData));
+      localStorage.setItem("accessToken", token);
+      return response.data;
+    } catch (err) {
+      if (axios.isAxiosError(err)) {
+        console.error(err.response?.data);
+        throw err;
+      } else {
+        console.error("Unexpected error:", err);
+        throw err;
+      }
+    }
   };
 
   return (

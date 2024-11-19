@@ -1,7 +1,8 @@
 //userService.ts
-import { User } from "@/contexts/AuthContext"
+import { User } from "@/contexts/AuthContext";
 
-const refreshUser = () => {
+const refreshUser = () => {};
+
+export const fetchPosts = () => {
     
-}
-
+};
