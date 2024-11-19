@@ -6,7 +6,7 @@ import axios from "axios";
 import { createContext, ReactNode, useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { z } from "zod";
-import { jwtDecode } from "jwt-decode";
+import { jwtDecode, JwtPayload } from "jwt-decode";
 
 export interface User {
   id: number;
@@ -24,7 +24,7 @@ export type AuthContextType = {
   logout: () => void;
 };
 
-type CustomJwtPayload = {
+interface CustomJwtPayload extends JwtPayload {
   UserInfo: User;
 };
 
@@ -39,13 +39,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     return savedUser ? JSON.parse(savedUser) : null;
   });
 
-  const logout = async () => {
-    setUser(null);
-    localStorage.removeItem("user");
-    localStorage.removeItem("accessToken");
-    navigate("/home");
-  };
-
+  // EXPORTED FUNCTION (REGISTER)
   const signup = async (user: z.infer<typeof signupSchema>) => {
     try {
       const response = await axios.post(
@@ -76,6 +70,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
+  // EXPORTED FUNCTION (LOGIN)
   const login = async (user: z.infer<typeof loginSchema>) => {
     try {
       const response = await axios.post(
@@ -105,6 +100,16 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       }
     }
   };
+
+  // EXPORTED FUNCTION (LOGIN)
+  const logout = async () => {
+    setUser(null);
+    localStorage.removeItem("user");
+    localStorage.removeItem("accessToken");
+    navigate("/home");
+  };
+  
+
 
   return (
     <AuthContext.Provider value={{ user, setUser, signup, login, logout }}>

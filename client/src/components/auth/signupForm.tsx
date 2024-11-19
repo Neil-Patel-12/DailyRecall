@@ -8,7 +8,7 @@ import { useForm } from "react-hook-form";
 import { Fields } from "@/components/auth/accountField";
 import axios from "axios";
 import useAuth from "@/contexts/AuthContext";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 export const signupSchema = z.object({
   firstName: z.string().min(1, {
@@ -74,8 +74,12 @@ export const SignupForm = () => {
         <div className="flex flex-col gap-8">
           <Fields form={form} FieldItems={signupItems} />
         </div>
+        <div className="flex w-full">
+          <p className="">Already have an account?</p>
+          <Link className="mx-2 font-bold text-accent hover:text-white transition-all ease-in-out duration-200" to="/user/login">LOGIN</Link>
+        </div>
         <div className="flex justify-end">
-          <Button className="mt-4 ml-auto" variant="outline" type="submit">
+          <Button className="ml-auto active:brightness-50" variant="outline" type="submit">
             Submit
           </Button>
         </div>

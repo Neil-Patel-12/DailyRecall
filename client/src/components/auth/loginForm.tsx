@@ -7,7 +7,7 @@ import { z } from "zod";
 import { Form } from "../ui/form";
 import { Fields } from "./accountField";
 import { Button } from "../ui/button";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import useAuth from "@/contexts/AuthContext";
 
 export const loginSchema = z.object({
@@ -50,8 +50,12 @@ export const LoginForm = () => {
         <div className="flex flex-col gap-8">
           <Fields form={form} FieldItems={loginItems} />
         </div>
+        <div className="flex w-full">
+          <p className="">No account?</p>
+          <Link className="mx-2 font-bold text-accent hover:text-white transition-all ease-in-out duration-200" to="/user/signup">REGISTER</Link>
+        </div>
         <div className="flex justify-end">
-          <Button className="mt-4 ml-auto" variant="outline" type="submit">
+          <Button className="mt-4 ml-auto active:brightness-50" variant="outline" type="submit">
             Submit
           </Button>
         </div>
