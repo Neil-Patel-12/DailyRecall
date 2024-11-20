@@ -1,5 +1,9 @@
+# serializers.py
+
 from django.contrib.auth.models import User
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework import serializers
+from django.contrib.auth import authenticate
 from .models import User_Post
 
 # we are going to create a serializer
@@ -48,3 +52,16 @@ class User_PostSerializer(serializers.ModelSerializer):
         fields = ["id", "subject", "topic", "mastery",
                   "content", "author", "date_posted"]
         extra_kwargs = {"author": {"read_only": True}}
+
+class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
+    username_field = 'email'
+    def validate(self, attrs):
+        data = super().validate(attrs)
+        data['userInfo'] = {
+            "id": self.user.id,
+            "firstName": self.user.first_name,
+            "lastName": self.user.last_name,
+            "email": self.user.email,
+            "username": self.user.username,
+        }
+        return data

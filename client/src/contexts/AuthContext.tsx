@@ -72,6 +72,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   // EXPORTED FUNCTION (LOGIN)
   const login = async (user: z.infer<typeof loginSchema>) => {
+    console.log(`Payload: ${JSON.stringify(user)}`);
     try {
       const response = await axios.post(
         "http://127.0.0.1:8000/api/user/login/",
@@ -80,10 +81,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
           withCredentials: true,
         }
       );
+      console.log(response);
       const token = response.data.accessToken;
-      const decoded = jwtDecode<CustomJwtPayload>(token);
-      console.log(decoded);
-      const userData: User = decoded.UserInfo;
+      const userData: User = response.data.userInfo;
 
       setUser(userData);
 

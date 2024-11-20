@@ -1,11 +1,21 @@
+# views.py
+
 from django.shortcuts import render
 from django.contrib.auth.models import User
 from rest_framework import generics
-from .serializers import UserSerializer, User_PostSerializer
+from .serializers import CustomTokenObtainPairSerializer, UserSerializer, User_PostSerializer
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from .models import User_Post
 from rest_framework.response import Response
 from rest_framework import status
+from rest_framework_simplejwt.views import TokenObtainPairView
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+from rest_framework.views import APIView
+from rest_framework_simplejwt.tokens import RefreshToken
+import logging
+from api import serializers
+
+logger = logging.getLogger(__name__)
 
 # Write views for creating user_post and deleting user_post
 
@@ -52,9 +62,88 @@ class CreateUserView(generics.CreateAPIView):
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
         if serializer.is_valid():
-            self.perform_create(serializer)
-            return Response(
-                {"message": "User registered successfully!"},
-                status=status.HTTP_201_CREATED
+            user = serializer.save()
+            
+            refresh = RefreshToken.for_user(user)
+            access = refresh.access_token
+            
+            user_info = {
+                "id": user.id,
+                "firstName": user.first_name,
+                "lastName": user.last_name,
+                "email": user.email,
+                "username": user.username,
+            }
+            
+            response = Response({
+                "message": "User registered successfully!",
+                "accessToken": str(access),
+                "userData": user_info,
+            }, status=status.HTTP_201_CREATED)
+            
+            response.set_cookie(
+                key="refreshToken",
+                value=str(refresh),
+                httponly=True,  
+                secure=True,    
+                samesite="Lax"  
             )
+            return response
+        
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class UserLoginView(TokenObtainPairView):
+    serializer_class = CustomTokenObtainPairSerializer
+
+    def post(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        try:
+            serializer.is_valid(raise_exception=True)
+        except serializers.ValidationError as e:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+        data = serializer.validated_data
+
+        refreshToken = data.get("refresh")
+        accessToken = data.get("access")
+        userInfo = data.get("userInfo")
+        
+        response = Response({
+            "accessToken": accessToken,
+            "userInfo": userInfo,
+        }, status=status.HTTP_200_OK)
+        
+        response.set_cookie(
+            key="refreshToken",
+            value=refreshToken,
+            httponly=True,
+            secure=True,  # Set to True in production
+            samesite=None,
+            max_age=60*60*24*7,
+        )
+
+        return response
+
+
+class RefreshTokenView(APIView):
+    def post(self, request, *args, **kwargs):
+        refresh_token = request.COOKIES.get("refreshToken")
+        if not refresh_token:
+            return Response({"error": "No refresh token found"}, status=status.HTTP_401_UNAUTHORIZED)
+
+        try:
+            token = RefreshToken(refresh_token)
+            access_token = str(token.access_token)
+            return Response({"accessToken": access_token}, status=status.HTTP_200_OK)
+        except Exception as e:
+            logger.error(f"Refresh token error: {e}")
+            return Response({"error": "Invalid or expired refresh token"}, status=status.HTTP_401_UNAUTHORIZED)
+
+
+class UserLogoutView(APIView):
+    def post(self, request, *args, **kwargs):
+        response = Response(
+            {"message": "Logged out successfully"}, status=status.HTTP_200_OK)
+        response.delete_cookie("refresh_token")
+        return response

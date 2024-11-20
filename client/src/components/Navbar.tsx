@@ -7,7 +7,6 @@ import logo from "/logo.png";
 import { Button } from "./ui/button";
 
 export const Navbar = ({ children }: { children?: ReactNode }) => {
-  const navigate = useNavigate();
   const { user } = useAuth();
 
   return (
