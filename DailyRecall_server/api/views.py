@@ -119,7 +119,7 @@ class UserLoginView(TokenObtainPairView):
             value=refreshToken,
             httponly=True,
             secure=True,  # Set to True in production
-            samesite=None,
+            samesite="none",
             max_age=60*60*24*7,
         )
 

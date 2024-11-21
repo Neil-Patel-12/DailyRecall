@@ -75,7 +75,9 @@ INSTALLED_APPS = [
     'corsheaders',     # CORS headers for cross-origin requests
 ]
 
-CORS_ALLOWED_ORIGINS = ['http://localhost:3000']
+
+
+CORS_ALLOWED_ORIGINS = ['http://localhost:3500']
 CORS_ALLOW_CREDENTIALS = True
 
 MIDDLEWARE = [

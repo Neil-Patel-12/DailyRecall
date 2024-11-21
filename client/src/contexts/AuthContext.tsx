@@ -43,7 +43,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const signup = async (user: z.infer<typeof signupSchema>) => {
     try {
       const response = await axios.post(
-        "http://127.0.0.1:8000/api/user/register/",
+        "/api/user/register/",
         user,
         {
           withCredentials: true,
@@ -75,7 +75,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     console.log(`Payload: ${JSON.stringify(user)}`);
     try {
       const response = await axios.post(
-        "http://127.0.0.1:8000/api/user/login/",
+        "/api/user/login/",
         user,
         {
           withCredentials: true,
