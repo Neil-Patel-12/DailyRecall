@@ -4,7 +4,7 @@ from .models import User_Post
 
 # we are going to create a serializer
 # django users uses ORM
-# from out API, we will be accepting JSON data
+# from our API, we will be accepting JSON data
 
 
 class UserSerializer(serializers.ModelSerializer):
