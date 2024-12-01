@@ -7,8 +7,10 @@ import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { Fields } from "@/components/auth/accountField";
 import axios from "axios";
+import useAuth from "@/contexts/AuthContext";
+import { Link, useNavigate } from "react-router-dom";
 
-const signupSchema = z.object({
+export const signupSchema = z.object({
   firstName: z.string().min(1, {
     message: "Please enter your first name",
   }),
@@ -40,6 +42,9 @@ const signupItems = [
 ];
 
 export const SignupForm = () => {
+  const { signup } = useAuth();
+  const navigate = useNavigate();
+  
   const form = useForm<z.infer<typeof signupSchema>>({
     resolver: zodResolver(signupSchema),
     defaultValues: {
@@ -52,11 +57,9 @@ export const SignupForm = () => {
   });
 
   const onSubmit = async (user: z.infer<typeof signupSchema>) => {
-    console.log(user);
     try {
-      await axios.post("http://127.0.0.1:8000/api/user/register/", user, {
-        withCredentials: true,
-      });
+      await signup(user);
+      navigate("/home");
     } catch (err) {
       if (axios.isAxiosError(err)) {
         const errors = err.response?.data;
@@ -71,8 +74,12 @@ export const SignupForm = () => {
         <div className="flex flex-col gap-8">
           <Fields form={form} FieldItems={signupItems} />
         </div>
+        <div className="flex w-full">
+          <p className="">Already have an account?</p>
+          <Link className="mx-2 font-bold text-accent hover:text-white transition-all ease-in-out duration-200" to="/user/login">LOGIN</Link>
+        </div>
         <div className="flex justify-end">
-          <Button className="mt-4 ml-auto" variant="outline" type="submit">
+          <Button className="ml-auto active:brightness-50" variant="outline" type="submit">
             Submit
           </Button>
         </div>
