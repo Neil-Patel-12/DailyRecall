@@ -26,7 +26,7 @@ class Topic(models.Model):
 
 # Create your models here.
 class User_Post(models.Model):
-    title = models.CharField(max_length=50, null=True, blank=False)
+    title = models.CharField(max_length=50, null=False, default="Untitled")
     confidence = models.IntegerField(default=5, validators=[MinValueValidator(1), MaxValueValidator(10)])
     content = models.TextField()  # Optional: a more detailed explanation of what was learned
 
