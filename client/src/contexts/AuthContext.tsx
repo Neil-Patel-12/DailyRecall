@@ -104,9 +104,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   // EXPORTED FUNCTION (LOGOUT)
   const logout = async () => {
     setUser(null);
-    localStorage.removeItem("user");
-    localStorage.removeItem("accessToken");
-    navigate("/home");
+    await localStorage.removeItem("user");
+    await localStorage.removeItem("accessToken");
+    window.location.href = "/";
   };
   
 

@@ -47,11 +47,11 @@ interface AuthButtonProps {
 const buttons: AuthButtonProps[] = [
   {
     label: "Signup",
-    path: "/user/signup",
+    path: "/auth/signup",
   },
   {
     label: "Login",
-    path: "/user/login",
+    path: "/auth/login",
   },
 ];
 

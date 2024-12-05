@@ -3,8 +3,10 @@
 import { Routes, Route } from "react-router-dom";
 import { Navbar } from "@/components/Navbar";
 import { Home } from "@/routes/Landing";
-import "@/index.css";
 import { AuthRoutes } from "./auth/authRoutes";
+import { UserRoutes } from "./user/userRoutes";
+import { PrivateRoute } from "./auth/ProtectedRoutes";
+import "@/index.css";
 
 const App = () => {
   return (
@@ -13,7 +15,15 @@ const App = () => {
       <Routes>
         <Route index element={<Home />} />
         <Route path="/*" element={<Home />} />
-        <Route path="/user/*" element={<AuthRoutes/>} />
+        <Route path="/auth/*" element={<AuthRoutes />} />
+        <Route
+          path="/user/*"
+          element={
+            <PrivateRoute>
+              <UserRoutes />
+            </PrivateRoute>
+          }
+        />
       </Routes>
     </>
   );

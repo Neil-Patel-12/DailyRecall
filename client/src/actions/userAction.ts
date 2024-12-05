@@ -43,3 +43,5 @@ const checkAccessToken = (token: string): boolean => {
     return true;
   }
 };
+
+export { checkAuth };
