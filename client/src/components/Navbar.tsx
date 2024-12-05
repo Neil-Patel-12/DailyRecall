@@ -7,11 +7,13 @@ import logo from "/logo.png";
 import { MdOutlineAddBox } from "react-icons/md";
 import { Button } from "./ui/button";
 import { UserDropdown } from "./UserDropdown";
-
+ 
+// Navbar component, displayed at top
 export const Navbar = ({ children }: { children?: ReactNode }) => {
   const { user } = useAuth();
 
   return (
+    // main navbar container
     <nav className="bg-primary-foreground h-[60px] w-full flex justify-center fixed top-0 left-0 z-[49]">
       <ul className="w-[70%] h-full flex items-center gap-4">
         <Link className="mr-auto border-none" to="/home">
@@ -39,24 +41,27 @@ export const Navbar = ({ children }: { children?: ReactNode }) => {
   );
 };
 
+// type definition for authentication button 
 interface AuthButtonProps {
   label: string;
   path: string;
 }
 
+// array of authentication buttons
 const buttons: AuthButtonProps[] = [
   {
     label: "Signup",
-    path: "/auth/signup",
+    path: "/auth/signup", // path to signup
   },
   {
     label: "Login",
-    path: "/auth/login",
+    path: "/auth/login",  // path to login
   },
 ];
 
+// Component to render authentication buttons
 const AuthButtons = ({ buttons }: { buttons: Array<AuthButtonProps> }) => {
-  const navigate = useNavigate();
+  const navigate = useNavigate(); // react router hook
   return buttons.map(({ label, path }) => (
     <Button
       key={label}

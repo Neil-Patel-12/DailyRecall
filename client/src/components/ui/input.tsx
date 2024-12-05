@@ -3,9 +3,11 @@ import * as React from "react"
 import { cn } from "@/lib/utils"
 
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type
+// extend native HTML input attributes to ensure full compatibility
 export interface InputProps
   extends React.InputHTMLAttributes<HTMLInputElement> {}
-
+ 
+// define input component with support for ref forwarding
 const Input = React.forwardRef<HTMLInputElement, InputProps>(
   ({ className, type, ...props }, ref) => {
     return (
@@ -21,6 +23,8 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
     )
   }
 )
+
 Input.displayName = "Input"
 
+// export input component for reuse
 export { Input }
