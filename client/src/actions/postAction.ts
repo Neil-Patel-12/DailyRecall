@@ -1,4 +1,3 @@
-
 // postAction.ts
 
 const createPost = async() => {
