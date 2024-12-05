@@ -3,10 +3,25 @@ import { useAuth } from "@/contexts/AuthContext";
 import axios from "axios";
 import { jwtDecode, JwtPayload } from "jwt-decode";
 
-export const updateUser = async () => {};
+const updateUser = async () => {
+  await auth(async () => {
+    
+  })
+};
+
 
 
 // Authentication Verification and Refresh
+const auth = async (callback: () => Promise<void>) => {
+  try {
+    await checkAuth(); 
+    await callback();
+  } catch (err) {
+    console.error("Authentication or operation failed:", err);
+    throw err;
+  }
+};
+
 const checkAuth = async () => {
   try {
     const accessToken = localStorage.getItem("accessToken");
@@ -24,6 +39,8 @@ const checkAuth = async () => {
       const newAccessToken = response.data.accessToken;
       localStorage.setItem("accessToken", newAccessToken);
     }
+    
+    
   } catch (err) {
     console.error("Token refresh failed:", err);
     localStorage.removeItem("accessToken");
@@ -47,4 +64,4 @@ const checkAccessToken = (token: string): boolean => {
   }
 };
 
-export { checkAuth };
+export { auth, updateUser };

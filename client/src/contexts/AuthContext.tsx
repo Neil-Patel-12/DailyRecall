@@ -4,7 +4,6 @@ import { loginSchema } from "@/components/auth/loginForm";
 import { signupSchema } from "@/components/auth/signupForm";
 import axios from "axios";
 import { createContext, ReactNode, useContext, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { z } from "zod";
 import { jwtDecode, JwtPayload } from "jwt-decode";
 
@@ -33,7 +32,6 @@ export const AuthContext = createContext<AuthContextType | undefined>(
 );
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
-  const navigate = useNavigate();
   const [user, setUser] = useState<User | null>(() => {
     const savedUser = localStorage.getItem("user");
     return savedUser ? JSON.parse(savedUser) : null;
