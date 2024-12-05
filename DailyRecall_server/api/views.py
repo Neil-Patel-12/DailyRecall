@@ -9,7 +9,7 @@ from .serializers import (
     User_PostSerializer,
 )
 from rest_framework.permissions import IsAuthenticated, AllowAny
-from .models import User_Post
+from .models import User_Post, Topic
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework_simplejwt.views import TokenObtainPairView
