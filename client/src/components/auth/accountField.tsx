@@ -9,11 +9,13 @@ import {
 } from "../ui/form";
 import { Input } from "../ui/input";
 
+// define the props for the fields component
 interface FieldsProps<T extends FieldValues> {
     form: UseFormReturn<T>;
     FieldItems: Array<{ name: string; label: string; type?: string }>;
   }
-  
+   
+  // fields component for rendering multiple form fields dynamically
   export const Fields = <T extends FieldValues>({ form, FieldItems }: FieldsProps<T>) => {
     return (
       <>

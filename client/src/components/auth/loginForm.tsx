@@ -10,16 +10,19 @@ import { Button } from "../ui/button";
 import { Link, useNavigate } from "react-router-dom";
 import useAuth from "@/contexts/AuthContext";
 
+// define validation schema using Zod
 export const loginSchema = z.object({
   email: z.string().email({ message: "Please enter a valid email." }),
   password: z.string().min(1, { message: "Please enter a valid password." }),
 });
 
+// define fields to render in the form
 const loginItems = [
   { name: "email", label: "Email" },
   { name: "password", label: "Password", type: "password" },
 ];
 
+// loginform component definition
 export const LoginForm = () => {
   const { login } = useAuth();
   const navigate = useNavigate();
@@ -32,6 +35,7 @@ export const LoginForm = () => {
     },
   });
 
+  // SUBMIT HANDLER FOR THE FORM
   const onSubmit = async (user: z.infer<typeof loginSchema>) => {
     try {
       await login(user);

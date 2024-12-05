@@ -16,6 +16,7 @@ const DropdownMenuSub = DropdownMenuPrimitive.Sub
 
 const DropdownMenuRadioGroup = DropdownMenuPrimitive.RadioGroup
 
+// SUB-TRIGGER component for nested dropdowns
 const DropdownMenuSubTrigger = React.forwardRef<
   React.ElementRef<typeof DropdownMenuPrimitive.SubTrigger>,
   React.ComponentPropsWithoutRef<typeof DropdownMenuPrimitive.SubTrigger> & {
@@ -38,6 +39,7 @@ const DropdownMenuSubTrigger = React.forwardRef<
 DropdownMenuSubTrigger.displayName =
   DropdownMenuPrimitive.SubTrigger.displayName
 
+  // sub-content component for nested dropdowns
 const DropdownMenuSubContent = React.forwardRef<
   React.ElementRef<typeof DropdownMenuPrimitive.SubContent>,
   React.ComponentPropsWithoutRef<typeof DropdownMenuPrimitive.SubContent>
@@ -54,6 +56,7 @@ const DropdownMenuSubContent = React.forwardRef<
 DropdownMenuSubContent.displayName =
   DropdownMenuPrimitive.SubContent.displayName
 
+  // content component for the dropdown menu
 const DropdownMenuContent = React.forwardRef<
   React.ElementRef<typeof DropdownMenuPrimitive.Content>,
   React.ComponentPropsWithoutRef<typeof DropdownMenuPrimitive.Content>
@@ -71,11 +74,12 @@ const DropdownMenuContent = React.forwardRef<
   </DropdownMenuPrimitive.Portal>
 ))
 DropdownMenuContent.displayName = DropdownMenuPrimitive.Content.displayName
-
+ 
+// individual menu item component
 const DropdownMenuItem = React.forwardRef<
   React.ElementRef<typeof DropdownMenuPrimitive.Item>,
   React.ComponentPropsWithoutRef<typeof DropdownMenuPrimitive.Item> & {
-    inset?: boolean
+    inset?: boolean 
   }
 >(({ className, inset, ...props }, ref) => (
   <DropdownMenuPrimitive.Item
@@ -90,6 +94,7 @@ const DropdownMenuItem = React.forwardRef<
 ))
 DropdownMenuItem.displayName = DropdownMenuPrimitive.Item.displayName
 
+// checkbox item component
 const DropdownMenuCheckboxItem = React.forwardRef<
   React.ElementRef<typeof DropdownMenuPrimitive.CheckboxItem>,
   React.ComponentPropsWithoutRef<typeof DropdownMenuPrimitive.CheckboxItem>
@@ -114,6 +119,7 @@ const DropdownMenuCheckboxItem = React.forwardRef<
 DropdownMenuCheckboxItem.displayName =
   DropdownMenuPrimitive.CheckboxItem.displayName
 
+  // radio item component
 const DropdownMenuRadioItem = React.forwardRef<
   React.ElementRef<typeof DropdownMenuPrimitive.RadioItem>,
   React.ComponentPropsWithoutRef<typeof DropdownMenuPrimitive.RadioItem>
@@ -135,7 +141,8 @@ const DropdownMenuRadioItem = React.forwardRef<
   </DropdownMenuPrimitive.RadioItem>
 ))
 DropdownMenuRadioItem.displayName = DropdownMenuPrimitive.RadioItem.displayName
-
+ 
+// label for menu items
 const DropdownMenuLabel = React.forwardRef<
   React.ElementRef<typeof DropdownMenuPrimitive.Label>,
   React.ComponentPropsWithoutRef<typeof DropdownMenuPrimitive.Label> & {
@@ -154,6 +161,7 @@ const DropdownMenuLabel = React.forwardRef<
 ))
 DropdownMenuLabel.displayName = DropdownMenuPrimitive.Label.displayName
 
+// separator component for dividing menu sections 
 const DropdownMenuSeparator = React.forwardRef<
   React.ElementRef<typeof DropdownMenuPrimitive.Separator>,
   React.ComponentPropsWithoutRef<typeof DropdownMenuPrimitive.Separator>
@@ -166,6 +174,7 @@ const DropdownMenuSeparator = React.forwardRef<
 ))
 DropdownMenuSeparator.displayName = DropdownMenuPrimitive.Separator.displayName
 
+// shortcut label for menu items
 const DropdownMenuShortcut = ({
   className,
   ...props
@@ -179,6 +188,7 @@ const DropdownMenuShortcut = ({
 }
 DropdownMenuShortcut.displayName = "DropdownMenuShortcut"
 
+// export all components for reuses
 export {
   DropdownMenu,
   DropdownMenuTrigger,
