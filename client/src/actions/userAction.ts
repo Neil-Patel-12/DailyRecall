@@ -5,7 +5,8 @@ import { jwtDecode, JwtPayload } from "jwt-decode";
 
 export const updateUser = async () => {};
 
-// Authentication Verification
+
+// Authentication Verification and Refresh
 const checkAuth = async () => {
   try {
     const accessToken = localStorage.getItem("accessToken");
@@ -31,6 +32,8 @@ const checkAuth = async () => {
   }
 };
 
+
+// Helper Function (check if access token expired)
 const checkAccessToken = (token: string): boolean => {
   try {
     const decoded = jwtDecode<JwtPayload>(token);

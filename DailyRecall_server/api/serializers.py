@@ -19,8 +19,7 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ["id", "username", "password",
-                  "email", "firstName", "lastName"]
+        fields = ["id", "username", "password", "email", "firstName", "lastName"]
         extra_kwargs = {"password": {"write_only": True}}
 
     def validate_username(self, value):
@@ -41,6 +40,7 @@ class UserSerializer(serializers.ModelSerializer):
         )
         return user
 
+
 # when our model is create, we need to create a serializer for this model
 # because remember, this is an api. And we need to be able to convert this into JSON
 # data, so that we can recieve it, and return it.
@@ -49,15 +49,24 @@ class UserSerializer(serializers.ModelSerializer):
 class User_PostSerializer(serializers.ModelSerializer):
     class Meta:
         model = User_Post
-        fields = ["id", "subject", "topic", "mastery",
-                  "content", "author", "date_posted"]
+        fields = [
+            "id",
+            "subject",
+            "topic",
+            "mastery",
+            "content",
+            "author",
+            "date_posted",
+        ]
         extra_kwargs = {"author": {"read_only": True}}
 
+
 class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
-    username_field = 'email'
+    username_field = "email"
+
     def validate(self, attrs):
         data = super().validate(attrs)
-        data['userInfo'] = {
+        data["userInfo"] = {
             "id": self.user.id,
             "firstName": self.user.first_name,
             "lastName": self.user.last_name,
