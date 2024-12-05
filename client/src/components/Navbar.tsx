@@ -4,7 +4,9 @@ import { ReactNode } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import useAuth from "@/contexts/AuthContext";
 import logo from "/logo.png";
+import { MdOutlineAddBox } from "react-icons/md";
 import { Button } from "./ui/button";
+import { UserDropdown } from "./UserDropdown";
 
 export const Navbar = ({ children }: { children?: ReactNode }) => {
   const { user } = useAuth();
@@ -17,13 +19,14 @@ export const Navbar = ({ children }: { children?: ReactNode }) => {
         </Link>
 
         {user ? (
-          <Link
-            className="flex items-center justify-center h-[calc(60px*0.6)] w-[calc(60px*0.6)] text-background
+          <UserDropdown>
+            <Button
+              className="flex items-center justify-center h-[calc(60px*0.6)] w-[calc(60px*0.6)] text-background
         border-none rounded-full transition-all duration-150 ease-linear bg-white cursor-pointer hover:brightness-75"
-            to="/user"
-          >
-            D/R
-          </Link>
+            >
+              D/R
+            </Button>
+          </UserDropdown>
         ) : (
           <div className="flex gap-4 min-w-[250px]">
             <AuthButtons buttons={buttons} />

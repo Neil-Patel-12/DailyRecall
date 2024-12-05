@@ -5,8 +5,6 @@ import { jwtDecode, JwtPayload } from "jwt-decode";
 
 export const updateUser = async () => {};
 
-
-
 // Authentication Verification
 const checkAuth = async () => {
   try {
