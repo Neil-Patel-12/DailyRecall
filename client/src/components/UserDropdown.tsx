@@ -19,6 +19,7 @@ import { IoDocumentsOutline } from "react-icons/io5";
 import { IoMdSettings } from "react-icons/io";
 import { IoLogOutOutline } from "react-icons/io5";
 
+// Define the structure for link props used in the dropdown menu
 interface LinkProps {
   label: string;
   path: string;
@@ -26,8 +27,9 @@ interface LinkProps {
   onClick?: () => void;
 }
 
+// wraps children in a dropdown menu
 export const UserDropdown = ({ children }: { children: ReactNode }) => {
-  const { user } = useAuth();
+  const { user } = useAuth();  // Access the authenticated user from the AuthContext
 
   return (
     <DropdownMenu>
@@ -45,29 +47,31 @@ export const UserDropdown = ({ children }: { children: ReactNode }) => {
   );
 };
 
+
+// Links component, renders individual menu items
 const Links = () => {
-  const { logout } = useAuth();
+  const { logout } = useAuth(); // Access logout
 
   const links: LinkProps[] = [
     {
       label: "Profile",
       path: "/user/profile",
-      Icon: FaRegUser,
+      Icon: FaRegUser, // Profile icon
     },
     {
       label: "My Posts",
       path: "/user/posts",
-      Icon: IoDocumentsOutline,
+      Icon: IoDocumentsOutline, // Posts icon
     },
     {
       label: "Settings",
       path: "/user/settings",
-      Icon: IoMdSettings,
+      Icon: IoMdSettings, // settings icon
     },
     {
       label: "Logout",
-      path: "/",
-      Icon: IoLogOutOutline,
+      path: "/", // redirect on logout
+      Icon: IoLogOutOutline, // logout icon
       onClick: logout,
     },
   ];

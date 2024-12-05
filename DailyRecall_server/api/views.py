@@ -175,5 +175,5 @@ class UserLogoutView(APIView):
         response = Response(
             {"message": "Logged out successfully"}, status=status.HTTP_200_OK
         )
-        response.delete_cookie("refresh_token")
+        response.delete_cookie("refreshToken")
         return response
