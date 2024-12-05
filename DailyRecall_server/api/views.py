@@ -20,6 +20,9 @@ logger = logging.getLogger(__name__)
 # Write views for creating user_post and deleting user_post
 
 
+# List and create User Post, for listing and creating posts,
+# that is why i am using ListCreateAPIView
+# Users can see their own posts and create new ones.
 class User_PostListCreate(generics.ListCreateAPIView):
     serializer_class = User_PostSerializer
     # cannot call this root, unless you are authenticata, and pass valid JWT token
@@ -27,6 +30,7 @@ class User_PostListCreate(generics.ListCreateAPIView):
 
     # need access to the request object
     def get_queryset(self):
+        # Show only the posts of the logged-in user
         user = self.request.user
         return User_Post.objects.filter(author=user)
 
@@ -39,12 +43,14 @@ class User_PostListCreate(generics.ListCreateAPIView):
             print(serializer.errors)
 
 
-class User_PostDelete(generics.DestroyAPIView):
+# this is for Retrieve, Update, and Delete User Posts
+class User_PostDetail(generics.DestroyAPIView):
     serializer_class = User_PostSerializer
     permission_classes = [IsAuthenticated]
 
     # you can only delete Posts that you own
     def get_queryset(self):
+        # Users can only access their own posts
         user = self.request.user
         return User_Post.objects.filter(author=user)
 
