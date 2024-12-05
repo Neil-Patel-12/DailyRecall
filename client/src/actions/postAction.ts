@@ -1,8 +1,16 @@
 // postAction.ts
+import { api } from "@/lib/api";
 
 const createPost = async() => {
     
 };
+
+
+//************* */
+const fetchPosts = async(page: number, paginateBy: number) => {
+    api.get()
+};
+//**************/
 
 const updatePost = async() => {
     
@@ -11,13 +19,4 @@ const updatePost = async() => {
 const deletePost = async() => {
     
 };
-
-const getPostById = async() => {
-    
-};
-
-const fetchPosts = async(userId: number) => {
-    
-};
-
 export {createPost, updatePost, deletePost, fetchPosts};

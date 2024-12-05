@@ -171,6 +171,7 @@ class RefreshTokenView(APIView):
 # User LogOut : Removes refresh token cookie
 class UserLogoutView(APIView):
     # Invalidate the refresh token by deleting the corresponding cookie.
+    permission_classes = [AllowAny]
     def post(self, request, *args, **kwargs):
         response = Response(
             {"message": "Logged out successfully"}, status=status.HTTP_200_OK

@@ -94,9 +94,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const logout = async () => {
     try {
       await axios.post("/api/user/logout/", user, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("accessToken")}`
-        },
         withCredentials: true,
       });
       setUser(null);

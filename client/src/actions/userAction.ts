@@ -13,6 +13,9 @@ const auth = async (callback: () => Promise<void>) => {
     await callback();
   } catch (err) {
     console.error("Authentication or operation failed:", err);
+    api.post("/api/user/logout/", {}, {
+      withCredentials: true,
+    });
     throw err;
   }
 };
