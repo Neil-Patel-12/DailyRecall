@@ -1,5 +1,3 @@
-# DEPRECTATED
-
 from django.urls import path
 from . import views
 from django.contrib.auth.views import LoginView
@@ -13,7 +11,4 @@ urlpatterns = [
         "user_post/<int:pk>/", views.User_PostDetail.as_view(), name="user_post_detail"
     ),
     # this doesnt work # path("user_post/delete/<int:pk>", views.User_PostDelete.as_view(), name="delete_post"),
-    path(
-        "login/", LoginView.as_view(template_name="login.html"), name="login"
-    ),  # may be relocated to /api path
 ]

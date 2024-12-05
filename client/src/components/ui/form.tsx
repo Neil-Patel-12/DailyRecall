@@ -13,8 +13,10 @@ import {
 import { cn } from "@/lib/utils";
 import { Label } from "@/components/ui/label";
 
+// form component using React Hook Form's FormProvider
 const Form = FormProvider;
 
+// 
 type FormFieldContextValue<
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
@@ -22,10 +24,12 @@ type FormFieldContextValue<
   name: TName;
 };
 
+// context to manage current form field 
 const FormFieldContext = React.createContext<FormFieldContextValue>(
   {} as FormFieldContextValue
 );
 
+// component to wrap Hook Form controller
 const FormField = <
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
@@ -39,6 +43,7 @@ const FormField = <
   );
 };
 
+// custom hook to access field-related context and form state
 const useFormField = () => {
   const fieldContext = React.useContext(FormFieldContext);
   const itemContext = React.useContext(FormItemContext);
@@ -61,15 +66,18 @@ const useFormField = () => {
     ...fieldState,
   };
 };
-
+ 
+// define type for form item context value
 type FormItemContextValue = {
   id: string;
 };
 
+// component to manage current form item's state
 const FormItemContext = React.createContext<FormItemContextValue>(
   {} as FormItemContextValue
 );
-
+ 
+// Component to wrap individual form items
 const FormItem = React.forwardRef<
   HTMLDivElement,
   React.HTMLAttributes<HTMLDivElement>
@@ -88,11 +96,12 @@ const FormItem = React.forwardRef<
 });
 FormItem.displayName = "FormItem";
 
+// component for form label
 const FormLabel = React.forwardRef<
   React.ElementRef<typeof LabelPrimitive.Root>,
   React.ComponentPropsWithoutRef<typeof LabelPrimitive.Root>
 >(({ className, ...props }, ref) => {
-  const { error, formItemId } = useFormField();
+  const { error, formItemId } = useFormField(); // access fiel context and state
 
   return (
     <Label
@@ -105,12 +114,13 @@ const FormLabel = React.forwardRef<
 });
 FormLabel.displayName = "FormLabel";
 
+// Component for form control (ex : input, select, text area)
 const FormControl = React.forwardRef<
   React.ElementRef<typeof Slot>,
   React.ComponentPropsWithoutRef<typeof Slot>
 >(({ ...props }, ref) => {
   const { error, formItemId, formDescriptionId, formMessageId } =
-    useFormField();
+    useFormField(); // access field state and context
 
   return (
     <Slot
@@ -128,6 +138,7 @@ const FormControl = React.forwardRef<
 });
 FormControl.displayName = "FormControl";
 
+// Component for form description
 const FormDescription = React.forwardRef<
   HTMLParagraphElement,
   React.HTMLAttributes<HTMLParagraphElement>
@@ -145,6 +156,7 @@ const FormDescription = React.forwardRef<
 });
 FormDescription.displayName = "FormDescription";
 
+// Component for displaying form error messages
 const FormMessage = React.forwardRef<
   HTMLParagraphElement,
   React.HTMLAttributes<HTMLParagraphElement>
@@ -153,7 +165,7 @@ const FormMessage = React.forwardRef<
   const body = error ? String(error?.message) : children;
 
   if (!body) {
-    return null;
+    return null;  // do not render if no context
   }
 
   return (
@@ -172,6 +184,7 @@ const FormMessage = React.forwardRef<
 });
 FormMessage.displayName = "FormMessage";
 
+// Export all form-related components for reuse
 export {
   useFormField,
   Form,

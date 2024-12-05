@@ -12,7 +12,7 @@ export const UserRoutes = () => {
         <Route index element={<Profile />}/>
         <Route path="profile/*" element={<Profile />}/>
         <Route path="posts/*" element={<MyPosts />}/>
-        <Route path="settings" element={<Settings />}/>
+        <Route path="settings/*" element={<Settings />}/>
     </Routes>
   )  
 };

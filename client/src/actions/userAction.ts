@@ -1,20 +1,30 @@
 //userAction.ts
-import { useAuth } from "@/contexts/AuthContext";
-import axios from "axios";
 import { jwtDecode, JwtPayload } from "jwt-decode";
+import { api } from "@/lib/api";
 
-export const updateUser = async () => {};
-
+const updateUser = async () => {
+  await auth(async () => {});
+};
 
 // Authentication Verification and Refresh
+const auth = async (callback: () => Promise<void>) => {
+  try {
+    await checkAuth();
+    await callback();
+  } catch (err) {
+    console.error("Authentication or operation failed:", err);
+    throw err;
+  }
+};
+
 const checkAuth = async () => {
   try {
     const accessToken = localStorage.getItem("accessToken");
     const isExpired = accessToken ? checkAccessToken(accessToken) : true;
 
     if (!accessToken || isExpired) {
-      const response = await axios.post(
-        "http://127.0.0.1:8000/api/token/refresh/",
+      const response = await api.post(
+        "api/token/refresh/",
         {},
         {
           withCredentials: true,
@@ -32,7 +42,6 @@ const checkAuth = async () => {
   }
 };
 
-
 // Helper Function (check if access token expired)
 const checkAccessToken = (token: string): boolean => {
   try {
@@ -47,4 +56,4 @@ const checkAccessToken = (token: string): boolean => {
   }
 };
 
-export { checkAuth };
+export { auth, updateUser };

@@ -4,7 +4,6 @@ import { loginSchema } from "@/components/auth/loginForm";
 import { signupSchema } from "@/components/auth/signupForm";
 import axios from "axios";
 import { createContext, ReactNode, useContext, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { z } from "zod";
 import { jwtDecode, JwtPayload } from "jwt-decode";
 
@@ -26,14 +25,13 @@ export type AuthContextType = {
 
 interface CustomJwtPayload extends JwtPayload {
   UserInfo: User;
-};
+}
 
 export const AuthContext = createContext<AuthContextType | undefined>(
   undefined
 );
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
-  const navigate = useNavigate();
   const [user, setUser] = useState<User | null>(() => {
     const savedUser = localStorage.getItem("user");
     return savedUser ? JSON.parse(savedUser) : null;
@@ -42,13 +40,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   // EXPORTED FUNCTION (REGISTER)
   const signup = async (user: z.infer<typeof signupSchema>) => {
     try {
-      const response = await axios.post(
-        "/api/user/register/",
-        user,
-        {
-          withCredentials: true,
-        }
-      );
+      const response = await axios.post("/api/user/register/", user, {
+        withCredentials: true,
+      });
       const token = response.data.accessToken;
       const decoded = jwtDecode<CustomJwtPayload>(token);
       console.log(decoded);
@@ -72,15 +66,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   // EXPORTED FUNCTION (LOGIN)
   const login = async (user: z.infer<typeof loginSchema>) => {
-    console.log(`Payload: ${JSON.stringify(user)}`);
     try {
-      const response = await axios.post(
-        "/api/user/login/",
-        user,
-        {
-          withCredentials: true,
-        }
-      );
+      const response = await axios.post("/api/user/login/", user, {
+        withCredentials: true,
+      });
       console.log(response);
       const token = response.data.accessToken;
       const userData: User = response.data.userInfo;
@@ -103,13 +92,27 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   // EXPORTED FUNCTION (LOGOUT)
   const logout = async () => {
-    setUser(null);
-    await localStorage.removeItem("user");
-    await localStorage.removeItem("accessToken");
-    window.location.href = "/";
+    try {
+      await axios.post("/api/user/logout/", user, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`
+        },
+        withCredentials: true,
+      });
+      setUser(null);
+      localStorage.removeItem("user");
+      localStorage.removeItem("accessToken");
+      window.location.href = "/";
+    } catch (err) {
+      if (axios.isAxiosError(err)) {
+        console.error(err.response?.data);
+        throw err;
+      } else {
+        console.error("Unexpected error:", err);
+        throw err;
+      }
+    }
   };
-  
-
 
   return (
     <AuthContext.Provider value={{ user, setUser, signup, login, logout }}>
