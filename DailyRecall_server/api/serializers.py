@@ -47,16 +47,23 @@ class UserSerializer(serializers.ModelSerializer):
 
 
 class User_PostSerializer(serializers.ModelSerializer):
+    first_name = serializers.CharField(source="author.first_name", read_only=True)
+    last_name = serializers.CharField(source="author.last_name", read_only=True)
+    subject = serializers.CharField(source="topic.subject", read_only=True)
+
     class Meta:
         model = User_Post
         fields = [
-            "id",
-            "subject",
-            "topic",
-            "mastery",
-            "content",
-            "author",
-            "date_posted",
+            'first_name',  # Include the user's first name
+            'last_name',   # Include the user's last name
+            'subject',
+            'id',
+            'title',
+            'confidence',
+            'content',
+            'author',
+            'date_posted',
+            'topic',
         ]
         extra_kwargs = {"author": {"read_only": True}}
 

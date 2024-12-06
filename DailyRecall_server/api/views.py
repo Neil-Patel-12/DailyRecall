@@ -19,35 +19,98 @@ from rest_framework_simplejwt.tokens import RefreshToken
 import logging
 from api import serializers
 
+from rest_framework.pagination import PageNumberPagination
+
 
 logger = logging.getLogger(__name__)
+
+class CustomPageNumberPagination(PageNumberPagination):
+    """
+    Custom pagination to allow dynamic page size via query parameters.
+    """
+    page_size_query_param = 'paginate_by'
+    max_page_size = 100  # Limit maximum number of items per page
 
 
 # List and create User Post, for listing and creating posts,
 # that is why i am using ListCreateAPIView
 # Users can see their own posts and create new ones.
-class User_PostListCreate(generics.ListCreateAPIView):
-    serializer_class = User_PostSerializer
-    permission_classes = [
-        IsAuthenticated
-    ]  # cannot call this root, unless you are authenticata, and pass valid JWT token
+# class User_PostListCreate(generics.ListCreateAPIView):
+#     serializer_class = User_PostSerializer
+#     permission_classes = [
+#         IsAuthenticated
+#     ]  # cannot call this root, unless you are authenticata, and pass valid JWT token
 
-    # need access to the request object
-    def get_queryset(self):
-        # Show only the posts of the logged-in user
-        user = self.request.user
-        return User_Post.objects.filter(author=user)
+#     # need access to the request object
+#     def get_queryset(self):
+#         # Show only the posts of the logged-in user
+#         user = self.request.user
+#         return User_Post.objects.filter(author=user)
 
-    def preform_create(self, serializer):
-        # the serializer checks the data that was passes and tell us if its valid or not
-        # serializer will check all the field arguments to see if its valid
+#     def preform_create(self, serializer):
+#         # the serializer checks the data that was passes and tell us if its valid or not
+#         # serializer will check all the field arguments to see if its valid
+#         if serializer.is_valid():
+#             serializer.save(author=self.request.user)
+#         else:
+#             print(serializer.errors)
+#             logger.error(
+#                 f"Failed to create post: {serializer.errors}"
+#             )  # preferred over print in production
+
+class User_PostListCreate(APIView):
+    """
+    Handles listing and creating User_Post instances with pagination support.
+    """
+    permission_classes = [AllowAny]
+    pagination_class = CustomPageNumberPagination
+
+    def get(self, request, *args, **kwargs):
+        # Filter posts by the authenticated user
+        queryset = User_Post.objects.filter(author=request.user)
+        paginator = self.pagination_class()
+        paginated_queryset = paginator.paginate_queryset(queryset, request)
+        serializer = User_PostSerializer(paginated_queryset, many=True)
+        return paginator.get_paginated_response(serializer.data)
+        # Returns a paginated list of posts created by the authenticated user.
+
+    def post(self, request, *args, **kwargs):
+        # Create a new post for the authenticated user
+        serializer = User_PostSerializer(data=request.data)
         if serializer.is_valid():
-            serializer.save(author=self.request.user)
-        else:
-            print(serializer.errors)
-            logger.error(
-                f"Failed to create post: {serializer.errors}"
-            )  # preferred over print in production
+            serializer.save(author=request.user)
+            return Response(serializer.data, status=201)
+        return Response(serializer.errors, status=400)
+    
+
+class AllPostsList(APIView):
+    """
+    Handles retrieving all posts created by all users with pagination.
+    """
+    permission_classes = [AllowAny]
+    pagination_class = CustomPageNumberPagination
+
+    def get(self, request, *args, **kwargs):
+        # Retrieve query parameters
+        page_number = request.query_params.get('pageNumber', 1)  # Default to 1 if not provided
+        paginate_by = request.query_params.get('paginateBy', 10)  # Default to 10 if not provided
+
+        # Ensure paginate_by is passed to the pagination class dynamically
+        queryset = User_Post.objects.all()
+        paginator = self.pagination_class()
+        paginator.page_size = paginate_by  # Dynamically set page size
+
+        # Paginate the queryset
+        paginated_queryset = paginator.paginate_queryset(queryset, request)
+        serializer = User_PostSerializer(paginated_queryset, many=True)
+        
+        return paginator.get_paginated_response(serializer.data)
+        # Returns a paginated list of all posts created by all users.
+
+# class GetUserByID():
+#     # 
+#     pass
+
 
 
 # this is for Retrieve, Update, and Delete User Posts
