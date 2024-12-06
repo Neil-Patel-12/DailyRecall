@@ -44,7 +44,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       });
       const token = response.data.accessToken;
       const decoded = jwtDecode<CustomJwtPayload>(token);
-      console.log(decoded);
       const userData: User = decoded.UserInfo;
 
       setUser(userData);

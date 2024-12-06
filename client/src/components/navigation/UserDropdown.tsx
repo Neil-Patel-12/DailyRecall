@@ -64,7 +64,7 @@ const Links = () => {
       Icon: IoDocumentsOutline, // Posts icon
     },
     {
-      label: "Topic Confidence",
+      label: "Topic Growth",
       path: "/user/topics",
       Icon: FaMagnifyingGlassChart, // topics icon
     },
