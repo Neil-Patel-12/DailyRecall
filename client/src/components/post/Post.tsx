@@ -2,7 +2,14 @@
 
 import { ReactNode } from "react";
 import { Button } from "../ui/button";
-import { Dialog, DialogTrigger } from "../ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "../ui/dialog";
 
 export interface PostSmProps {
   id: number;
@@ -11,7 +18,7 @@ export interface PostSmProps {
   firstName: string;
   lastName: string;
   confidence: number;
-  subject: "Math" | "Science" | "History" | "Art" | "Misc";
+  subject: string;
 }
 
 const PostSm = ({ post }: { post: PostSmProps }) => {
@@ -25,13 +32,13 @@ const PostSm = ({ post }: { post: PostSmProps }) => {
           <h2 className="text-right mx-3 mt-3 text-md italic text-blue-900 font-semibold">
             {`${post.firstName} ${post.lastName}`}
           </h2>
-          <h2 className="text-4xl font-bold opacity-15 absolute translate-y-12 -translate-x-12 text-blue-900">
+          <h2 className="text-4xl font-bold opacity-15 absolute translate-y-12 translate-x-12 text-blue-900">
             {post.subject}
           </h2>
         </div>
         <div
           className={`${getColor(
-            post.confidence,
+            post.confidence
           )} flex absolute justify-center items-center translate-x-[110%] translate-y-5 rounded-full w-[8rem] h-[8rem] opacity-80 brightness-[75%] shadow-md self-end justify-self-end`}
         >
           <h1 className="top text-3xl font-bold text-blue-900">
@@ -47,6 +54,15 @@ const PostLg = ({ children }: { children: ReactNode }) => {
   return (
     <Dialog>
       <DialogTrigger asChild>{children}</DialogTrigger>
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>Are you absolutely sure?</DialogTitle>
+          <DialogDescription>
+            This action cannot be undone. Are you sure you want to permanently
+            delete this file from our servers?
+          </DialogDescription>
+        </DialogHeader>
+      </DialogContent>
     </Dialog>
   );
 };
