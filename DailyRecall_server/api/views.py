@@ -61,6 +61,26 @@ class AllPostsList(APIView):
         queryset = User_Post.objects.all().order_by('-date_posted')
         serializer = User_PostSerializer(queryset, many=True)
         return Response(serializer.data)
+    
+class UserPostsById(APIView):
+    """
+    Retrieves all posts made by a specific user based on user ID.
+    """
+    permission_classes = [AllowAny]
+
+    def get(self, request, user_id, *args, **kwargs):
+        try:
+            # Fetch all posts for the given user ID
+            posts = User_Post.objects.filter(author_id=user_id).order_by('-date_posted')
+            serializer = User_PostSerializer(posts, many=True)
+
+            return Response({
+                "results": serializer.data,
+                "totalCount": posts.count(),
+                "userId": user_id
+            }, status=200)
+        except User_Post.DoesNotExist:
+            return Response({"error": "User not found or no posts available."}, status=404)
 
 
 
