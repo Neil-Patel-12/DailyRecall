@@ -6,13 +6,13 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('api', '0002_remove_user_post_mastery_remove_user_post_subject_and_more'),
+        ("api", "0002_remove_user_post_mastery_remove_user_post_subject_and_more"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='user_post',
-            name='title',
-            field=models.CharField(default='Untitled', max_length=50),
+            model_name="user_post",
+            name="title",
+            field=models.CharField(default="Untitled", max_length=50),
         ),
     ]
