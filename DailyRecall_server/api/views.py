@@ -25,42 +25,17 @@ from rest_framework.pagination import PageNumberPagination
 # logger = logging.getLogger(__name__)
 
 
-
-# List and create User Post, for listing and creating posts,
-# that is why i am using ListCreateAPIView
-# Users can see their own posts and create new ones.
-# class User_PostListCreate(generics.ListCreateAPIView):
-#     serializer_class = User_PostSerializer
-#     permission_classes = [
-#         IsAuthenticated
-#     ]  # cannot call this root, unless you are authenticata, and pass valid JWT token
-
-#     # need access to the request object
-#     def get_queryset(self):
-#         # Show only the posts of the logged-in user
-#         user = self.request.user
-#         return User_Post.objects.filter(author=user)
-
-#     def preform_create(self, serializer):
-#         # the serializer checks the data that was passes and tell us if its valid or not
-#         # serializer will check all the field arguments to see if its valid
-#         if serializer.is_valid():
-#             serializer.save(author=self.request.user)
-#         else:
-#             print(serializer.errors)
-#             logger.error(
-#                 f"Failed to create post: {serializer.errors}"
-#             )  # preferred over print in production
-
-
 class User_PostListCreate(APIView):
     """
     Handles listing and creating User_Post instances without pagination.
     """
-    permission_classes = [AllowAny]
-    pagination_class = CustomPageNumberPagination
+    permission_classes = [IsAuthenticated]
 
     def get(self, request, *args, **kwargs):
+        # Ensure the request has an authenticated user
+        if not request.user.is_authenticated:
+            return Response({"error": "Authentication required"}, status=403)
+
         # Retrieve all posts by the authenticated user
         queryset = User_Post.objects.filter(author=request.user).order_by('-date_posted')
         serializer = User_PostSerializer(queryset, many=True)
@@ -70,7 +45,7 @@ class User_PostListCreate(APIView):
         # Create a new post for the authenticated user
         serializer = User_PostSerializer(data=request.data)
         if serializer.is_valid():
-            serializer.save(author=request.user)
+            serializer.save(author=request.user)  # Set the authenticated user as the author
             return Response(serializer.data, status=201)
         return Response(serializer.errors, status=400)
 
@@ -79,42 +54,13 @@ class AllPostsList(APIView):
     """
     Handles retrieving all posts created by all users without pagination.
     """
-
     permission_classes = [AllowAny]
 
     def get(self, request, *args, **kwargs):
-        # Retrieve query parameters
-        try:
-            page_number = int(request.query_params.get('pageNumber', 1))
-            paginate_by = int(request.query_params.get('paginateBy', 10))
-        except ValueError:
-            return Response({"error": "Invalid pagination parameters"}, status=400)
-
-        paginate_by = max(1, paginate_by)
-        # Ensure paginate_by is passed to the pagination class dynamically
+        # Retrieve all posts, ordered by most recent
         queryset = User_Post.objects.all().order_by('-date_posted')
-        if not queryset.exists():  # Check if the queryset is empty
-            return Response({"error": "No posts available"}, status=404)
-        
-        paginator = self.pagination_class()
-        paginator.page_size = paginate_by 
-
-        # Paginate the queryset
-        paginated_queryset = paginator.paginate_queryset(queryset, request)
-        if paginated_queryset is None:
-            return Response({"error": "No more posts available"}, status=404)
-        
-        serializer = User_PostSerializer(paginated_queryset, many=True)
-        
-        response =  paginator.get_paginated_response(serializer.data)
-        response.data['hasMore'] = paginator.page.has_next()
-        response.data['totalCount'] = paginator.page.paginator.count
-
-        return response
-
-# class GetUserByID():
-#     # 
-#     pass
+        serializer = User_PostSerializer(queryset, many=True)
+        return Response(serializer.data)
 
 
 
