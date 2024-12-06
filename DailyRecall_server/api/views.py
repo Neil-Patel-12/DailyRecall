@@ -25,15 +25,6 @@ from rest_framework.pagination import PageNumberPagination
 # logger = logging.getLogger(__name__)
 
 
-class CustomPageNumberPagination(PageNumberPagination):
-    """
-    Custom pagination to allow dynamic page size via query parameters.
-    """
-
-    page_query_param = "pageNumber"
-    page_size_query_param = "paginate_by"
-    max_page_size = 100
-
 
 # List and create User Post, for listing and creating posts,
 # that is why i am using ListCreateAPIView
@@ -64,20 +55,16 @@ class CustomPageNumberPagination(PageNumberPagination):
 
 class User_PostListCreate(APIView):
     """
-    Handles listing and creating User_Post instances with pagination support.
+    Handles listing and creating User_Post instances without pagination.
     """
-
     permission_classes = [AllowAny]
     pagination_class = CustomPageNumberPagination
 
     def get(self, request, *args, **kwargs):
-        # Filter posts by the authenticated user
-        queryset = User_Post.objects.filter(author=request.user)
-        paginator = self.pagination_class()
-        paginated_queryset = paginator.paginate_queryset(queryset, request)
-        serializer = User_PostSerializer(paginated_queryset, many=True)
-        return paginator.get_paginated_response(serializer.data)
-        # Returns a paginated list of posts created by the authenticated user.
+        # Retrieve all posts by the authenticated user
+        queryset = User_Post.objects.filter(author=request.user).order_by('-date_posted')
+        serializer = User_PostSerializer(queryset, many=True)
+        return Response(serializer.data)
 
     def post(self, request, *args, **kwargs):
         # Create a new post for the authenticated user
@@ -90,46 +77,45 @@ class User_PostListCreate(APIView):
 
 class AllPostsList(APIView):
     """
-    Handles retrieving all posts created by all users with pagination.
+    Handles retrieving all posts created by all users without pagination.
     """
 
     permission_classes = [AllowAny]
-    pagination_class = CustomPageNumberPagination
 
     def get(self, request, *args, **kwargs):
         # Retrieve query parameters
         try:
-            page_number = int(request.query_params.get("pageNumber", 1))
-            paginate_by = int(request.query_params.get("paginateBy", 10))
+            page_number = int(request.query_params.get('pageNumber', 1))
+            paginate_by = int(request.query_params.get('paginateBy', 10))
         except ValueError:
             return Response({"error": "Invalid pagination parameters"}, status=400)
 
         paginate_by = max(1, paginate_by)
         # Ensure paginate_by is passed to the pagination class dynamically
-        queryset = User_Post.objects.all().order_by("-date_posted")
+        queryset = User_Post.objects.all().order_by('-date_posted')
         if not queryset.exists():  # Check if the queryset is empty
             return Response({"error": "No posts available"}, status=404)
-
+        
         paginator = self.pagination_class()
-        paginator.page_size = paginate_by
+        paginator.page_size = paginate_by 
 
         # Paginate the queryset
         paginated_queryset = paginator.paginate_queryset(queryset, request)
         if paginated_queryset is None:
             return Response({"error": "No more posts available"}, status=404)
-
+        
         serializer = User_PostSerializer(paginated_queryset, many=True)
-
-        response = paginator.get_paginated_response(serializer.data)
-        response.data["hasMore"] = paginator.page.has_next()
-        response.data["totalCount"] = paginator.page.paginator.count
+        
+        response =  paginator.get_paginated_response(serializer.data)
+        response.data['hasMore'] = paginator.page.has_next()
+        response.data['totalCount'] = paginator.page.paginator.count
 
         return response
 
-
 # class GetUserByID():
-#     #
+#     # 
 #     pass
+
 
 
 # this is for Retrieve, Update, and Delete User Posts
