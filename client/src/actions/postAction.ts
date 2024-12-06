@@ -8,14 +8,9 @@ const createPost = async () => {};
 
 //************* */
 // PUBLIC
-const fetchPosts = async (
-  pageNumber: number,
-  paginateBy: number
-): Promise<any> => {
+const fetchPosts = async (): Promise<any> => {
   try {
-    const response = await api.get("/api/posts/all", {
-      params: { pageNumber, paginateBy },
-    });
+    const response = await api.get("/api/posts/all", {});
     console.log(response);
     return response;
   } catch (error) {
