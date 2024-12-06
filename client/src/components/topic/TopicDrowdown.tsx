@@ -28,8 +28,8 @@ interface Topic {
 }
 
 interface TopicDropdownProps {
-    onSelectTopic: (topicId: number | null) => void; 
-  }
+  onSelectTopic: (topicId: number | null) => void;
+}
 
 export const TopicDropdown = ({ onSelectTopic }: TopicDropdownProps) => {
   const { user } = useAuth();
@@ -42,12 +42,13 @@ export const TopicDropdown = ({ onSelectTopic }: TopicDropdownProps) => {
       try {
         if (user) {
           const response = await fetchTopics(user.id);
-          const mappedTopics = response.data.map((topic: any) => ({
+          const mappedTopics = response.data.results.map((topic: any) => ({
             topicId: topic.id,
-            topicName: topic.name,
+            topicName: topic.name_of_topic,
             subject: mapSubject(topic.subject),
           }));
-          setTopics(mappedTopics);
+          const uniqueTopics = getUniqueTopics(mappedTopics);
+          setTopics(uniqueTopics);
         }
       } catch (error) {
         if (axios.isAxiosError(error)) {
@@ -60,11 +61,23 @@ export const TopicDropdown = ({ onSelectTopic }: TopicDropdownProps) => {
 
     fetchUserTopics();
   }, [user]);
-  
+
   const handleSelect = (topic: Topic) => {
     setSelectedTopic(topic);
     setOpen(false);
-    onSelectTopic(topic.topicId); 
+    onSelectTopic(topic.topicId);
+  };
+
+  const getUniqueTopics = (topics: Topic[]): Topic[] => {
+    const seen = new Set();
+    return topics.filter((topic) => {
+      const key = `${topic.topicName}-${topic.subject}`;
+      if (seen.has(key)) {
+        return false;
+      }
+      seen.add(key);
+      return true;
+    });
   };
 
   return (
@@ -83,7 +96,7 @@ export const TopicDropdown = ({ onSelectTopic }: TopicDropdownProps) => {
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-[300px] p-0">
-        <Command>
+        <Command className="overflow-hidden">
           <CommandInput placeholder="Search topic..." />
           <CommandList>
             <CommandEmpty>No topics found.</CommandEmpty>
@@ -91,7 +104,7 @@ export const TopicDropdown = ({ onSelectTopic }: TopicDropdownProps) => {
               {topics.map((topic) => (
                 <CommandItem
                   key={topic.topicId}
-                  value={topic.topicName}
+                  value={`${topic.topicId}`}
                   onSelect={() => {
                     handleSelect(topic);
                   }}

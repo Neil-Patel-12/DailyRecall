@@ -21,6 +21,14 @@ urlpatterns = [
     # DONT WORRY ABOUT THIS ONE
     path("user_post/<int:pk>/", views.User_PostDetail.as_view(), name="user_post_detail"),
 
-    # There are still 3 more that need to be added here. 
+    # There are still 3-4 more that need to be added here. 
     path("topics/user/<int:user_id>/", views.TopicsByUserId.as_view(), name="topics_by_user"),
+
+    path("posts/user/<int:user_id>/topic/<int:topic_id>/", views.PostsByUserAndTopic.as_view(), name="posts_by_user_and_topic"),
+
+    # Create Topic
+    path("topics/create/<int:user_id>/", views.CreateTopic.as_view(), name="create_topic"),
+
+    # Create Post
+    path("posts/create/<int:user_id>/", views.CreatePost.as_view(), name="create_post"),
 ]

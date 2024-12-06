@@ -1,7 +1,7 @@
 // Posts.tsx
 import { useEffect, useState } from "react";
 import { PostLg, PostSmProps } from "./Post";
-import { fetchPosts } from "@/actions/postAction";
+import { fetchPosts, fetchPostsByTopic } from "@/actions/postAction";
 import { PostSm } from "./Post";
 
 interface PostListProps {
@@ -9,16 +9,17 @@ interface PostListProps {
   selectedTopicId?: number | null;
 }
 
-export const PostList = ({userId}: PostListProps) => {
+export const PostList = ({ userId }: PostListProps) => {
   const [posts, setPosts] = useState<PostSmProps[]>([]);
 
   const results = async () => {
     try {
       const response = await fetchPosts();
-      setPosts(response.data);
+      const parsed = response.data.map(parsePostSmResponse);
+      setPosts(parsed);
     } catch (error) {
       console.error("Failed to fetch posts:", error);
-    } 
+    }
   };
 
   useEffect(() => {
@@ -29,13 +30,15 @@ export const PostList = ({userId}: PostListProps) => {
     ? posts.filter((post) => post.authorId === userId)
     : posts;
 
+  console.log(filteredPosts);
+
   return (
     <div className="min-w-[775px] max-w-[800px] h-auto inline-flex flex-wrap justify-between px-2">
       {posts.length > 0 ? (
         <>
           {filteredPosts.map((post: PostSmProps) => (
             <PostLg key={post?.id}>
-              <PostSm post={parsePostSmResponse(post)} />
+              <PostSm post={post} />
             </PostLg>
           ))}
         </>
@@ -46,14 +49,18 @@ export const PostList = ({userId}: PostListProps) => {
   );
 };
 
-export const PostListByTopic = ({userId, selectedTopicId}:PostListProps) => {
+export const PostListByTopic = ({ userId, selectedTopicId }: PostListProps) => {
   const [posts, setPosts] = useState<PostSmProps[]>([]);
 
   const fetchPosts = async () => {
     try {
       if (!userId) return; // Ensure userId is provided
       const response = await fetchPostsByTopic(userId, selectedTopicId || null);
-      setPosts(response.data); // Assuming response.data contains the posts array
+
+      console.log("selectedTopicId:", selectedTopicId);
+      console.log("Posts:", response);
+      const parsed = response.data.results.map(parsePostSmResponse);
+      setPosts(parsed); // Assuming response.data contains the posts array
     } catch (error) {
       console.error("Failed to fetch posts:", error);
     }
@@ -79,7 +86,7 @@ export const PostListByTopic = ({userId, selectedTopicId}:PostListProps) => {
       )}
     </div>
   );
-}
+};
 
 const parsePostSmResponse = (response: any): PostSmProps => {
   return {

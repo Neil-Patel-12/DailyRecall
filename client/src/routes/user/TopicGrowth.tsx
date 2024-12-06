@@ -13,11 +13,13 @@ export const TopicGrowth = () => {
     <div className="page-container flex justify-center ">
       <div className="content-container mt-24">
         <div className="flex flex-col my-5 gap-4">
-            <div className="w-full flex justify-center ">
-                <TopicDropdown onSelectTopic={(id) => setSelectedTopicId(id)}/>
-                <PostListByTopic userId={user?.id} selectedTopicId={selectedTopicId}/>
-            </div>
-            {/* DISPLAY POSTS BY TOPIC */}
+          <div className="w-full flex justify-center">
+            <TopicDropdown onSelectTopic={(id) => setSelectedTopicId(id)} />
+          </div>
+          <PostListByTopic
+            userId={user?.id}
+            selectedTopicId={selectedTopicId}
+          />
         </div>
       </div>
     </div>

@@ -2,7 +2,14 @@
 
 import { ReactNode } from "react";
 import { Button } from "../ui/button";
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "../ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "../ui/dialog";
 
 export interface PostSmProps {
   id: number;
@@ -11,7 +18,7 @@ export interface PostSmProps {
   firstName: string;
   lastName: string;
   confidence: number;
-  subject: "Math" | "Science" | "History" | "Art" | "Misc";
+  subject: string;
 }
 
 const PostSm = ({ post }: { post: PostSmProps }) => {
@@ -25,7 +32,7 @@ const PostSm = ({ post }: { post: PostSmProps }) => {
           <h2 className="text-right mx-3 mt-3 text-md italic text-blue-900 font-semibold">
             {`${post.firstName} ${post.lastName}`}
           </h2>
-          <h2 className="text-4xl font-bold opacity-15 absolute translate-y-12 -translate-x-12 text-blue-900">
+          <h2 className="text-4xl font-bold opacity-15 absolute translate-y-12 translate-x-12 text-blue-900">
             {post.subject}
           </h2>
         </div>

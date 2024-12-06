@@ -9,7 +9,7 @@ export const MyPosts = () => {
     <div className="page-container flex justify-center ">
       <div className="content-container mt-24">
         <div className=" flex gap-4">
-          <PostList userId={user?.id}/>
+          <PostList userId={user?.id} />
         </div>
       </div>
     </div>

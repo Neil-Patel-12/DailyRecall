@@ -8,6 +8,7 @@ from .serializers import (
     UserSerializer,
     User_PostSerializer,
     TopicSerializer,
+    PostByUserAndTopicSerializer,
 )
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from .models import User_Post, Topic
@@ -109,6 +110,124 @@ class TopicsByUserId(APIView):
                 {"error": "No topics found for the given user ID."},
                 status=status.HTTP_404_NOT_FOUND,
             )
+        
+
+class PostsByUserAndTopic(APIView):
+    """
+    Handles retrieving posts by a specific user ID and topic ID.
+    """
+    permission_classes = [AllowAny]
+
+    def get(self, request, user_id, topic_id, *args, **kwargs):
+        try:
+            # Fetch posts by the given user ID and topic ID
+            posts = User_Post.objects.filter(author_id=user_id, topic_id=topic_id).order_by('-date_posted')
+            if not posts.exists():
+                return Response({"error": "No posts found for the given user and topic."}, status=404)
+
+            serializer = PostByUserAndTopicSerializer(posts, many=True)
+
+            return Response(
+                {
+                    "results": serializer.data,
+                    "totalCount": posts.count(),
+                    "userId": user_id,
+                    "topicId": topic_id,
+                },
+                status=status.HTTP_200_OK,
+            )
+        except Exception as e:
+            return Response({"error": f"An error occurred: {str(e)}"}, status=500)
+        
+
+class CreateTopic(APIView):
+    """
+    Allows a user to create a topic.
+    """
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request, *args, **kwargs):
+        user_id = kwargs.get("user_id")  # Extract user_id from URL
+        data = request.data
+        topic_name = data.get("name")
+        subject = data.get("subject")
+
+        # Validate user exists
+        try:
+            user = User.objects.get(id=user_id)
+        except User.DoesNotExist:
+            return Response({"error": "User not found."}, status=404)
+
+        # Validate input data
+        if not topic_name or not subject:
+            return Response({"error": "Topic name and subject are required."}, status=400)
+
+        # Create and save the topic
+        topic = Topic.objects.create(name=topic_name, subject=subject, author=user)
+        return Response(
+            {
+                "id": topic.id,
+                "name": topic.name,
+                "subject": topic.subject,
+                "author": topic.author.id,
+            },
+            status=201,
+        )
+    
+
+class CreatePost(APIView):
+    """
+    Allows a user to create a post.
+    """
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request, *args, **kwargs):
+        user_id = kwargs.get("user_id")  # Extract user_id from URL
+        data = request.data
+        title = data.get("title")
+        content = data.get("content")
+        confidence = data.get("confidence")
+        topic_id = data.get("topic_id")
+
+        # Validate user exists
+        try:
+            user = User.objects.get(id=user_id)
+        except User.DoesNotExist:
+            return Response({"error": "User not found."}, status=404)
+
+        # Validate topic exists
+        try:
+            topic = Topic.objects.get(id=topic_id)
+        except Topic.DoesNotExist:
+            return Response({"error": "Topic not found."}, status=404)
+
+        # Validate input data
+        if not title or not content or not confidence:
+            return Response({"error": "Title, content, and confidence are required."}, status=400)
+
+        if not (1 <= int(confidence) <= 10):
+            return Response({"error": "Confidence must be between 1 and 10."}, status=400)
+
+        # Create and save the post
+        post = User_Post.objects.create(
+            title=title,
+            content=content,
+            confidence=confidence,
+            author=user,
+            topic=topic,
+        )
+        return Response(
+            {
+                "id": post.id,
+                "title": post.title,
+                "content": post.content,
+                "confidence": post.confidence,
+                "author": post.author.id,
+                "topic": post.topic.id,
+                "date_posted": post.date_posted,
+            },
+            status=201,
+        )
         
 # user id, the subject, and topic name
 
