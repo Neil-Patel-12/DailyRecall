@@ -108,7 +108,11 @@ class AllPostsList(APIView):
         paginated_queryset = paginator.paginate_queryset(queryset, request)
         serializer = User_PostSerializer(paginated_queryset, many=True)
         
-        return paginator.get_paginated_response(serializer.data)
+        response =  paginator.get_paginated_response(serializer.data)
+        response.data['hasMore'] = paginator.page.has_next()
+        response.data['totalCount'] = paginator.page.paginator.count
+
+        return response
         # Returns a paginated list of all posts created by all users.
 
 # class GetUserByID():

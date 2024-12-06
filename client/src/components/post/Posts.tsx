@@ -17,7 +17,12 @@ export const PostList = () => {
 
     setIsLoading(true);
     try {
+      console.log(`Fetching page ${page}...`);
       const response = await fetchPosts(page, paginateBy);
+      if (!response.data.hasMore) {
+        setHasMore(false);
+        return;
+      }
       const newPosts = response.data.results;
       setPosts((prev) => [...prev, ...newPosts]);
       setPage((prev) => prev + 1);
@@ -29,6 +34,10 @@ export const PostList = () => {
       console.error("Error loading posts:", error);
     }
   }, [page, isLoading, hasMore]);
+
+  useEffect(() => {
+    console.log("Current page:", page);
+  }, [page]);
 
   return (
     <div className="min-w-[775px] max-w-[800px] inline-flex flex-wrap justify-between px-2">
