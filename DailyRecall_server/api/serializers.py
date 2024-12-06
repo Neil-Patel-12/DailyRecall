@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework import serializers
 from django.contrib.auth import authenticate
-from .models import User_Post
+from .models import User_Post, Topic
 
 # we are going to create a serializer
 # django users uses ORM
@@ -40,6 +40,14 @@ class UserSerializer(serializers.ModelSerializer):
         )
         return user
 
+
+class TopicSerializer(serializers.ModelSerializer):
+    name_of_topic = serializers.CharField(source="name")
+    subject = serializers.CharField()
+
+    class Meta:
+        model = Topic
+        fields = ["id", "name_of_topic", "subject"]
 
 # when our model is create, we need to create a serializer for this model
 # because remember, this is an api. And we need to be able to convert this into JSON

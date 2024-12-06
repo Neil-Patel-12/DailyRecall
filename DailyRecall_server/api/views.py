@@ -7,6 +7,7 @@ from .serializers import (
     CustomTokenObtainPairSerializer,
     UserSerializer,
     User_PostSerializer,
+    TopicSerializer,
 )
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from .models import User_Post, Topic
@@ -81,6 +82,33 @@ class UserPostsById(APIView):
             }, status=200)
         except User_Post.DoesNotExist:
             return Response({"error": "User not found or no posts available."}, status=404)
+        
+
+class TopicsByUserId(APIView):
+    """
+    Handles retrieving topics by a specific user ID.
+    """
+    permission_classes = [AllowAny]
+
+    def get(self, request, user_id, *args, **kwargs):
+        try:
+            # Retrieve topics created by the user with the given user ID
+            topics = Topic.objects.filter(author_id=user_id).order_by("name")
+            serializer = TopicSerializer(topics, many=True)
+
+            return Response(
+                {
+                    "results": serializer.data,
+                    "totalCount": topics.count(),
+                    "userId": user_id,
+                },
+                status=status.HTTP_200_OK,
+            )
+        except Topic.DoesNotExist:
+            return Response(
+                {"error": "No topics found for the given user ID."},
+                status=status.HTTP_404_NOT_FOUND,
+            )
         
 # user id, the subject, and topic name
 

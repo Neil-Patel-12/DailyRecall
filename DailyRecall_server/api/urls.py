@@ -20,4 +20,7 @@ urlpatterns = [
     # Retrieve, Update, and Delete
     # DONT WORRY ABOUT THIS ONE
     path("user_post/<int:pk>/", views.User_PostDetail.as_view(), name="user_post_detail"),
+
+    # There are still 3 more that need to be added here. 
+    path("topics/user/<int:user_id>/", views.TopicsByUserId.as_view(), name="topics_by_user"),
 ]

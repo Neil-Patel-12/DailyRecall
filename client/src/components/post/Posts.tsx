@@ -24,7 +24,7 @@ export const PostList = ({userId}: PostListProps) => {
   useEffect(() => {
     results();
   }, []);
-  
+
   const filteredPosts = userId
     ? posts.filter((post) => post.authorId === userId)
     : posts;
