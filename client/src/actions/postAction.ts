@@ -13,10 +13,10 @@ const fetchPosts = async (
 ): Promise<any> => {
   try {
     await auth(async () => {
-      const response = await api.get("/api/posts/fetch", {
+      const response = await api.get("/api/posts/all", {
         params: { pageNumber, paginateBy },
       });
-
+      console.log(response.data);
       return response.data;
     });
   } catch (error) {

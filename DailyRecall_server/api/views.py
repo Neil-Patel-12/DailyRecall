@@ -96,7 +96,7 @@ class AllPostsList(APIView):
         paginate_by = request.query_params.get('paginateBy', 10)  # Default to 10 if not provided
 
         # Ensure paginate_by is passed to the pagination class dynamically
-        queryset = User_Post.objects.all()
+        queryset = User_Post.objects.all().order_by('-date_posted')
         paginator = self.pagination_class()
         paginator.page_size = paginate_by  # Dynamically set page size
 

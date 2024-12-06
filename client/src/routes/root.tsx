@@ -16,14 +16,7 @@ const App = () => {
         <Route index element={<Home />} />
         <Route path="/*" element={<Home />} />
         <Route path="/auth/*" element={<AuthRoutes />} />
-        <Route
-          path="/user/*"
-          element={
-            <PrivateRoute>
-              <UserRoutes />
-            </PrivateRoute>
-          }
-        />
+        <Route path="/user/*" element={<UserRoutes />} />
       </Routes>
     </>
   );
