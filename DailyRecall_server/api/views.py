@@ -28,8 +28,9 @@ class CustomPageNumberPagination(PageNumberPagination):
     """
     Custom pagination to allow dynamic page size via query parameters.
     """
+    page_query_param = 'pageNumber'
     page_size_query_param = 'paginate_by'
-    max_page_size = 100  # Limit maximum number of items per page
+    max_page_size = 100  
 
 
 # List and create User Post, for listing and creating posts,

@@ -31,7 +31,7 @@ const PostSm = ({post}: {post: PostSmProps}) => {
         </div>
         <div
           className={`${getColor(
-            10
+            post.confidence
           )} flex absolute justify-center items-center translate-x-[110%] translate-y-5 rounded-full w-[8rem] h-[8rem] opacity-80 brightness-[75%] shadow-md self-end justify-self-end`}
         >
           <h1 className="top text-3xl font-bold text-blue-900">
