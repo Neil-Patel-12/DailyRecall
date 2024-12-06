@@ -81,7 +81,28 @@ class UserPostsById(APIView):
             }, status=200)
         except User_Post.DoesNotExist:
             return Response({"error": "User not found or no posts available."}, status=404)
+        
+# user id, the subject, and topic name
 
+# createtopicswithuserid
+
+
+
+
+
+# this is for the profile page
+# fetch topic by id
+
+# this will be used to display in the front end for a specific users profile page
+# get post by user id and topic id
+
+
+# fetch all topics
+
+
+
+
+# createpostwithuserid
 
 
 # this is for Retrieve, Update, and Delete User Posts
