@@ -70,4 +70,6 @@ ul {
 }
 
 .content-container {
+  min-width: 1150px;
+  background-color: #08173e;
 }

@@ -4,7 +4,14 @@ import { auth } from "./userAction";
 import { PostSmProps } from "@/components/post/Post";
 import axios from "axios";
 
-const createPost = async () => {};
+
+const createPost = async () => {
+  auth(async () => {
+    const response = await api.post("/api/posts/create", postData);
+    console.log(response);
+    return response;
+  });
+};
 
 //************* */
 // PUBLIC

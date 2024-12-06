@@ -12,7 +12,6 @@ export interface User {
   firstName: string;
   lastName: string;
   email: string;
-  username: string;
 }
 
 export type AuthContextType = {

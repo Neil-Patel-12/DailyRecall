@@ -1,29 +1,33 @@
 // Posts.tsx
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { PostSmProps } from "./Post";
 import { fetchPosts } from "@/actions/postAction";
 import { PostSm } from "./Post";
-import { Button } from "../ui/button";
 
 export const PostList = () => {
   const [posts, setPosts] = useState<PostSmProps[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   const results = async () => {
     try {
       const response = await fetchPosts();
-      setPosts(response.data.results);
+      setPosts(response.data);
     } catch (error) {
-      console.error(error);
+      console.error("Failed to fetch posts:", error);
+      setError("Failed to load posts.");
+    } finally {
+      setIsLoading(false);
     }
   };
 
-  useState(() => {
+  useEffect(() => {
     results();
-  });
+  }, []);
 
   return (
     <div className="min-w-[775px] max-w-[800px] h-auto inline-flex flex-wrap justify-between px-2">
-      {posts.length ? (
+      {posts.length > 0 ? (
         <>
           {posts.map((post: PostSmProps) => (
             <PostSm key={post.id} post={parsePostSmResponse(post)} />
