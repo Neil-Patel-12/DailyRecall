@@ -50,18 +50,17 @@ export const Profile = () => {
         </div>
         <div className=" mt-4 text-xl flex">
           <p>Email: </p>
-          <p className="mx-4 font-bold ">
-            {`${user?.email}`}
-          </p>
+          <p className="mx-4 font-bold ">{`${user?.email}`}</p>
         </div>
         <div className=" mt-4 text-xl flex">
           <p>Password: </p>
-          <p className="mx-4 mt-1.5 font-bold ">
-            *****************
-          </p>
+          <p className="mx-4 mt-1.5 font-bold ">*****************</p>
         </div>
-        
-        <Button onClick={() => navigate("/user/settings")} className="max-w-[200px] m-5">
+
+        <Button
+          onClick={() => navigate("/user/settings")}
+          className="max-w-[200px] m-5"
+        >
           Edit
         </Button>
         <hr className="my-4 w-[400px]" />
