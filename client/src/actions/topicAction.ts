@@ -17,6 +17,6 @@ const fetchTopics = async (userId: number) => {
 
 
 
-const createTopic = async (userId: number, topicName: 
+// const createTopic = async (userId: number, topicName: 
 
 export { fetchTopics };
