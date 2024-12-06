@@ -7,18 +7,17 @@ import axios from "axios";
 const createPost = async () => {};
 
 //************* */
+// PUBLIC
 const fetchPosts = async (
   pageNumber: number,
   paginateBy: number
 ): Promise<any> => {
   try {
-    await auth(async () => {
-      const response = await api.get("/api/posts/all", {
-        params: { pageNumber, paginateBy },
-      });
-      console.log(response.data);
-      return response.data;
+    const response = await api.get("/api/posts/all", {
+      params: { pageNumber, paginateBy },
     });
+    console.log(response);
+    return response;
   } catch (error) {
     if (axios.isAxiosError(error)) {
       console.error("Error fetching tasks:", error.response?.data);

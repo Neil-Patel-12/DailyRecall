@@ -22,7 +22,7 @@ from api import serializers
 from rest_framework.pagination import PageNumberPagination
 
 
-logger = logging.getLogger(__name__)
+# logger = logging.getLogger(__name__)
 
 class CustomPageNumberPagination(PageNumberPagination):
     """
@@ -92,9 +92,13 @@ class AllPostsList(APIView):
 
     def get(self, request, *args, **kwargs):
         # Retrieve query parameters
-        page_number = request.query_params.get('pageNumber', 1)  # Default to 1 if not provided
-        paginate_by = request.query_params.get('paginateBy', 10)  # Default to 10 if not provided
+        try:
+            page_number = int(request.query_params.get('pageNumber', 1))
+            paginate_by = int(request.query_params.get('paginateBy', 10))
+        except ValueError:
+            return Response({"error": "Invalid pagination parameters"}, status=400)
 
+        paginate_by = max(1, paginate_by)
         # Ensure paginate_by is passed to the pagination class dynamically
         queryset = User_Post.objects.all().order_by('-date_posted')
         paginator = self.pagination_class()

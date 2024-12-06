@@ -18,7 +18,7 @@ export const PostList = () => {
     setIsLoading(true);
     try {
       const response = await fetchPosts(page, paginateBy);
-      const newPosts = response.data.posts;
+      const newPosts = response.data.results;
       setPosts((prev) => [...prev, ...newPosts]);
       setPage((prev) => prev + 1);
       if (newPosts.length < paginateBy) {
@@ -30,11 +30,6 @@ export const PostList = () => {
     }
   }, [page, isLoading, hasMore]);
 
-  const handleLoadPosts = (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault(); 
-    loadPosts(); 
-  };
-
   return (
     <div className="min-w-[775px] max-w-[800px] inline-flex flex-wrap justify-between px-2">
       {posts.map((post) => (
@@ -42,7 +37,7 @@ export const PostList = () => {
       ))}
       {isLoading && <div>Loading...</div>}
       {hasMore && (
-        <Button type="button" onClick={handleLoadPosts} disabled={isLoading}>
+        <Button type="button" onClick={loadPosts} disabled={isLoading}>
           Load More
         </Button>
       )}
@@ -63,17 +58,12 @@ const parsePostSmResponse = (response: any): PostSmProps => {
 };
 
 const mapSubject = (subject: string): PostSmProps["subject"] => {
-  const validSubjects: PostSmProps["subject"][] = [
-    "Math",
-    "Science",
-    "History",
-    "Art",
-    "Misc",
-  ];
+  const subjectMap: Record<string, PostSmProps["subject"]> = {
+    m: "Math",
+    s: "Science",
+    h: "History",
+    a: "Art",
+  };
 
-  if (validSubjects.includes(subject as PostSmProps["subject"])) {
-    return subject as PostSmProps["subject"];
-  }
-
-  return "Misc";
+  return subjectMap[subject] || "Misc";
 };
