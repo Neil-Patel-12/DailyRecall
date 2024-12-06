@@ -4,7 +4,12 @@ import { PostLg, PostSmProps } from "./Post";
 import { fetchPosts } from "@/actions/postAction";
 import { PostSm } from "./Post";
 
-export const PostList = ({userId}: {userId?: number}) => {
+interface PostListProps {
+  userId?: number;
+  selectedTopicId?: number | null;
+}
+
+export const PostList = ({userId}: PostListProps) => {
   const [posts, setPosts] = useState<PostSmProps[]>([]);
 
   const results = async () => {
@@ -40,6 +45,41 @@ export const PostList = ({userId}: {userId?: number}) => {
     </div>
   );
 };
+
+export const PostListByTopic = ({userId, selectedTopicId}:PostListProps) => {
+  const [posts, setPosts] = useState<PostSmProps[]>([]);
+
+  const fetchPosts = async () => {
+    try {
+      if (!userId) return; // Ensure userId is provided
+      const response = await fetchPostsByTopic(userId, selectedTopicId || null);
+      setPosts(response.data); // Assuming response.data contains the posts array
+    } catch (error) {
+      console.error("Failed to fetch posts:", error);
+    }
+  };
+
+  // Fetch posts whenever userId or selectedTopicId changes
+  useEffect(() => {
+    fetchPosts();
+  }, [userId, selectedTopicId]);
+
+  return (
+    <div className="min-w-[775px] max-w-[800px] h-auto inline-flex flex-wrap justify-between px-2">
+      {posts.length > 0 ? (
+        <>
+          {posts.map((post: PostSmProps) => (
+            <PostLg key={post?.id}>
+              <PostSm post={post} />
+            </PostLg>
+          ))}
+        </>
+      ) : (
+        <p className="text-4xl mt-10 ml-10">Nothing to show...</p>
+      )}
+    </div>
+  );
+}
 
 const parsePostSmResponse = (response: any): PostSmProps => {
   return {

@@ -43,7 +43,28 @@ const fetchUserPosts = async (userId: number): Promise<any> => {
   });
 };
 
+const fetchPostByTopic = async (
+  userId: number,
+  topicId: number
+): Promise<any> => {
+  try {
+    const response = await api.get(
+      `/api/posts/user/${userId}/topic/${topicId}/`,
+      {}
+    );
+    return response;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      console.error(
+        "Error fetching posts:",
+        error.response?.data || error.message
+      );
+    }
+    throw error;
+  }
+};
+
 const updatePost = async () => {};
 
 const deletePost = async () => {};
-export { updatePost, deletePost, fetchPosts, fetchUserPosts };
+export { updatePost, deletePost, fetchPosts, fetchUserPosts, fetchPostByTopic };

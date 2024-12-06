@@ -2,7 +2,7 @@
 
 import { ReactNode } from "react";
 import { Button } from "../ui/button";
-import { Dialog, DialogTrigger } from "../ui/dialog";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "../ui/dialog";
 
 export interface PostSmProps {
   id: number;
@@ -31,7 +31,7 @@ const PostSm = ({ post }: { post: PostSmProps }) => {
         </div>
         <div
           className={`${getColor(
-            post.confidence,
+            post.confidence
           )} flex absolute justify-center items-center translate-x-[110%] translate-y-5 rounded-full w-[8rem] h-[8rem] opacity-80 brightness-[75%] shadow-md self-end justify-self-end`}
         >
           <h1 className="top text-3xl font-bold text-blue-900">
@@ -47,6 +47,15 @@ const PostLg = ({ children }: { children: ReactNode }) => {
   return (
     <Dialog>
       <DialogTrigger asChild>{children}</DialogTrigger>
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>Are you absolutely sure?</DialogTitle>
+          <DialogDescription>
+            This action cannot be undone. Are you sure you want to permanently
+            delete this file from our servers?
+          </DialogDescription>
+        </DialogHeader>
+      </DialogContent>
     </Dialog>
   );
 };
