@@ -7,69 +7,30 @@ import { Button } from "../ui/button";
 
 export const PostList = () => {
   const [posts, setPosts] = useState<PostSmProps[]>([]);
-  const [page, setPage] = useState(1);
-  const [isLoading, setIsLoading] = useState(false);
-  const [hasMore, setHasMore] = useState(true);
-  const [paginateBy, setPaginate] = useState(10);
 
-  const loadPosts = useCallback(async () => {
-    if (isLoading || !hasMore) return;
-
-<<<<<<< HEAD
-=======
-    setPaginate(
-      total > page * paginateBy ? paginateBy : total - page * paginateBy,
-    );
->>>>>>> 11063d2f1e4d6a5eabae7cdf22181e903ec46f43
-    setIsLoading(true);
+  const results = async () => {
     try {
-      console.log(`Fetching page ${page}...`);
-      const response = await fetchPosts(page, paginateBy);
-      if (!response.data.hasMore) {
-        setHasMore(false);
-        return;
-      }
-      const newPosts = response.data.results;
-      setPosts((prev) => [...prev, ...newPosts]);
-      setPage((prev) => prev + 1);
-      if (newPosts.length < paginateBy) {
-        setHasMore(false);
-      }
-      setIsLoading(false);
+      const response = await fetchPosts();
+      setPosts(response.data.results);
     } catch (error) {
-      console.error("Error loading posts:", error);
-      setHasMore(false);
-      setIsLoading(false);
+      console.error(error);
     }
-  }, [page, isLoading, hasMore]);
+  };
 
-  const handleScroll = useCallback(() => {
-    const { scrollTop, scrollHeight, clientHeight } = document.documentElement;
-    if (scrollHeight - scrollTop <= clientHeight + 50) {
-      // 50px buffer
-      loadPosts();
-    }
-  }, [loadPosts]);
-
-  useEffect(() => {
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, [handleScroll]);
-
-  useEffect(() => {
-    loadPosts();
-  }, [loadPosts]);
+  useState(() => {
+    results();
+  });
 
   return (
     <div className="min-w-[775px] max-w-[800px] h-auto inline-flex flex-wrap justify-between px-2">
-      {posts.map((post) => (
-        <PostSm key={post.id} post={parsePostSmResponse(post)} />
-      ))}
-      {isLoading && <div>Loading...</div>}
-      {hasMore && !isLoading && (
-        <Button type="button" onClick={loadPosts} disabled={isLoading}>
-          Load More
-        </Button>
+      {posts.length ? (
+        <>
+          {posts.map((post: PostSmProps) => (
+            <PostSm key={post.id} post={parsePostSmResponse(post)} />
+          ))}
+        </>
+      ) : (
+        <p className="text-4xl mt-10 ml-10">Nothing to show...</p>
       )}
     </div>
   );
