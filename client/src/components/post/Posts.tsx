@@ -16,7 +16,9 @@ export const PostList = () => {
   const loadPosts = useCallback(async () => {
     if (isLoading || !hasMore) return;
 
-    setPaginate((total > page * paginateBy) ? paginateBy : total - page*paginateBy);
+    setPaginate(
+      total > page * paginateBy ? paginateBy : total - page * paginateBy,
+    );
     setIsLoading(true);
     try {
       console.log(`Fetching page ${page}...`);
@@ -42,7 +44,8 @@ export const PostList = () => {
 
   const handleScroll = useCallback(() => {
     const { scrollTop, scrollHeight, clientHeight } = document.documentElement;
-    if (scrollHeight - scrollTop <= clientHeight + 50) { // 50px buffer
+    if (scrollHeight - scrollTop <= clientHeight + 50) {
+      // 50px buffer
       loadPosts();
     }
   }, [loadPosts]);

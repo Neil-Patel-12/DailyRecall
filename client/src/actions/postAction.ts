@@ -10,7 +10,7 @@ const createPost = async () => {};
 // PUBLIC
 const fetchPosts = async (
   pageNumber: number,
-  paginateBy: number
+  paginateBy: number,
 ): Promise<any> => {
   try {
     const response = await api.get("/api/posts/all", {

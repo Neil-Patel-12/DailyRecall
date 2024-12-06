@@ -20,7 +20,6 @@ import { IoMdSettings } from "react-icons/io";
 import { IoLogOutOutline } from "react-icons/io5";
 import { FaMagnifyingGlassChart } from "react-icons/fa6";
 
-
 // Define the structure for link props used in the dropdown menu
 interface LinkProps {
   label: string;
@@ -31,7 +30,7 @@ interface LinkProps {
 
 // wraps children in a dropdown menu
 export const UserDropdown = ({ children }: { children: ReactNode }) => {
-  const { user } = useAuth();  // Access the authenticated user from the AuthContext
+  const { user } = useAuth(); // Access the authenticated user from the AuthContext
 
   return (
     <DropdownMenu>
@@ -48,7 +47,6 @@ export const UserDropdown = ({ children }: { children: ReactNode }) => {
     </DropdownMenu>
   );
 };
-
 
 // Links component, renders individual menu items
 const Links = () => {
@@ -93,7 +91,7 @@ const Links = () => {
           key={label}
         >
           <Link to={path}>
-            <Icon className="mr-2"/>
+            <Icon className="mr-2" />
             {label}
           </Link>
         </DropdownMenuItem>

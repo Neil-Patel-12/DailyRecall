@@ -44,7 +44,7 @@ const signupItems = [
 export const SignupForm = () => {
   const { signup } = useAuth();
   const navigate = useNavigate();
-  
+
   const form = useForm<z.infer<typeof signupSchema>>({
     resolver: zodResolver(signupSchema),
     defaultValues: {
@@ -76,10 +76,19 @@ export const SignupForm = () => {
         </div>
         <div className="flex w-full">
           <p className="">Already have an account?</p>
-          <Link className="mx-2 font-bold text-accent hover:text-white transition-all ease-in-out duration-200" to="/auth/login">LOGIN</Link>
+          <Link
+            className="mx-2 font-bold text-accent hover:text-white transition-all ease-in-out duration-200"
+            to="/auth/login"
+          >
+            LOGIN
+          </Link>
         </div>
         <div className="flex justify-end">
-          <Button className="ml-auto active:brightness-50" variant="outline" type="submit">
+          <Button
+            className="ml-auto active:brightness-50"
+            variant="outline"
+            type="submit"
+          >
             Submit
           </Button>
         </div>

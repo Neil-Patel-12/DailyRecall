@@ -16,23 +16,23 @@ import { Label } from "@/components/ui/label";
 // form component using React Hook Form's FormProvider
 const Form = FormProvider;
 
-// 
+//
 type FormFieldContextValue<
   TFieldValues extends FieldValues = FieldValues,
-  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
+  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 > = {
   name: TName;
 };
 
-// context to manage current form field 
+// context to manage current form field
 const FormFieldContext = React.createContext<FormFieldContextValue>(
-  {} as FormFieldContextValue
+  {} as FormFieldContextValue,
 );
 
 // component to wrap Hook Form controller
 const FormField = <
   TFieldValues extends FieldValues = FieldValues,
-  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
+  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 >({
   ...props
 }: ControllerProps<TFieldValues, TName>) => {
@@ -66,7 +66,7 @@ const useFormField = () => {
     ...fieldState,
   };
 };
- 
+
 // define type for form item context value
 type FormItemContextValue = {
   id: string;
@@ -74,9 +74,9 @@ type FormItemContextValue = {
 
 // component to manage current form item's state
 const FormItemContext = React.createContext<FormItemContextValue>(
-  {} as FormItemContextValue
+  {} as FormItemContextValue,
 );
- 
+
 // Component to wrap individual form items
 const FormItem = React.forwardRef<
   HTMLDivElement,
@@ -165,7 +165,7 @@ const FormMessage = React.forwardRef<
   const body = error ? String(error?.message) : children;
 
   if (!body) {
-    return null;  // do not render if no context
+    return null; // do not render if no context
   }
 
   return (
@@ -174,7 +174,7 @@ const FormMessage = React.forwardRef<
       id={formMessageId}
       className={cn(
         "text-sm font-semibold text-destructive absolute top-[35px]",
-        className
+        className,
       )}
       {...props}
     >
