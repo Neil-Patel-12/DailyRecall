@@ -11,17 +11,14 @@ export const PostList = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [hasMore, setHasMore] = useState(true);
   const [paginateBy, setPaginate] = useState(10);
-  const [total, setTotal] = useState(10);
 
   const loadPosts = useCallback(async () => {
     if (isLoading || !hasMore) return;
 
-    setPaginate((total > page * paginateBy) ? paginateBy : total - page*paginateBy);
     setIsLoading(true);
     try {
       console.log(`Fetching page ${page}...`);
       const response = await fetchPosts(page, paginateBy);
-      setTotal(response.data.totalCount);
       if (!response.data.hasMore) {
         setHasMore(false);
         return;
@@ -42,7 +39,8 @@ export const PostList = () => {
 
   const handleScroll = useCallback(() => {
     const { scrollTop, scrollHeight, clientHeight } = document.documentElement;
-    if (scrollHeight - scrollTop <= clientHeight + 50) { // 50px buffer
+    if (scrollHeight - scrollTop <= clientHeight + 50) {
+      // 50px buffer
       loadPosts();
     }
   }, [loadPosts]);
