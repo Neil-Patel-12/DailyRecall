@@ -101,11 +101,17 @@ class AllPostsList(APIView):
         paginate_by = max(1, paginate_by)
         # Ensure paginate_by is passed to the pagination class dynamically
         queryset = User_Post.objects.all().order_by('-date_posted')
+        if not queryset.exists():  # Check if the queryset is empty
+            return Response({"error": "No posts available"}, status=404)
+        
         paginator = self.pagination_class()
-        paginator.page_size = paginate_by  # Dynamically set page size
+        paginator.page_size = paginate_by 
 
         # Paginate the queryset
         paginated_queryset = paginator.paginate_queryset(queryset, request)
+        if paginated_queryset is None:
+            return Response({"error": "No more posts available"}, status=404)
+        
         serializer = User_PostSerializer(paginated_queryset, many=True)
         
         response =  paginator.get_paginated_response(serializer.data)
@@ -113,7 +119,6 @@ class AllPostsList(APIView):
         response.data['totalCount'] = paginator.page.paginator.count
 
         return response
-        # Returns a paginated list of all posts created by all users.
 
 # class GetUserByID():
 #     # 
