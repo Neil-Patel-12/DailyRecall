@@ -5,7 +5,7 @@ import { Link, useNavigate } from "react-router-dom";
 import useAuth from "@/contexts/AuthContext";
 import logo from "/logo.png";
 import { MdOutlineAddBox } from "react-icons/md";
-import { Button } from "./ui/button";
+import { Button } from "../ui/button";
 import { UserDropdown } from "./UserDropdown";
  
 // Navbar component, displayed at top

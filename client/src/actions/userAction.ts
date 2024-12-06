@@ -1,10 +1,24 @@
 //userAction.ts
 import { jwtDecode, JwtPayload } from "jwt-decode";
 import { api } from "@/lib/api";
+import axios from "axios";
 
 const updateUser = async () => {
   await auth(async () => {});
 };
+
+
+// unfinished
+const fetchUserId = async (id: number) => {
+  try {
+    await api.get(`/api/users/${id}`)
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      console.error("Error fetching tasks:", error.response?.data);
+    }
+    throw error;
+  }
+}
 
 // Authentication Verification and Refresh
 const auth = async (callback: () => Promise<void>) => {
@@ -16,6 +30,9 @@ const auth = async (callback: () => Promise<void>) => {
     api.post("/api/user/logout/", {}, {
       withCredentials: true,
     });
+    localStorage.removeItem("user");
+    localStorage.removeItem("accessToken");
+    window.location.href = "/";
     throw err;
   }
 };

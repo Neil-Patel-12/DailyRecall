@@ -1,8 +1,8 @@
 // Root.tsx
 
 import { Routes, Route } from "react-router-dom";
-import { Navbar } from "@/components/Navbar";
 import { Home } from "@/routes/Landing";
+import { Navbar } from "@/components/navigation/Navbar";
 import { AuthRoutes } from "./auth/authRoutes";
 import { UserRoutes } from "./user/userRoutes";
 import { PrivateRoute } from "./auth/ProtectedRoutes";

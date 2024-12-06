@@ -18,6 +18,8 @@ import { FaRegUser } from "react-icons/fa";
 import { IoDocumentsOutline } from "react-icons/io5";
 import { IoMdSettings } from "react-icons/io";
 import { IoLogOutOutline } from "react-icons/io5";
+import { FaMagnifyingGlassChart } from "react-icons/fa6";
+
 
 // Define the structure for link props used in the dropdown menu
 interface LinkProps {
@@ -62,6 +64,11 @@ const Links = () => {
       label: "My Posts",
       path: "/user/posts",
       Icon: IoDocumentsOutline, // Posts icon
+    },
+    {
+      label: "Topic Confidence",
+      path: "/user/topics",
+      Icon: FaMagnifyingGlassChart, // topics icon
     },
     {
       label: "Settings",
