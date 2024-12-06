@@ -4,7 +4,7 @@ import { PostLg, PostSmProps } from "./Post";
 import { fetchPosts } from "@/actions/postAction";
 import { PostSm } from "./Post";
 
-export const PostList = ({userId}: {userId?: number}) => {
+export const PostList = ({ userId }: { userId?: number }) => {
   const [posts, setPosts] = useState<PostSmProps[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -24,7 +24,7 @@ export const PostList = ({userId}: {userId?: number}) => {
   useEffect(() => {
     results();
   }, []);
-  
+
   const filteredPosts = userId
     ? posts.filter((post) => post.authorId === userId)
     : posts;
@@ -34,8 +34,8 @@ export const PostList = ({userId}: {userId?: number}) => {
       {posts.length > 0 ? (
         <>
           {filteredPosts.map((post: PostSmProps) => (
-            <PostLg>
-              <PostSm key={post?.id} post={parsePostSmResponse(post)} />
+            <PostLg key={post?.id}>
+              <PostSm post={parsePostSmResponse(post)} />
             </PostLg>
           ))}
         </>
