@@ -203,8 +203,10 @@ class UserLoginView(TokenObtainPairView):
 
 # Refreshes access token with valid refresh token
 class RefreshTokenView(APIView):
+    permission_classes = [AllowAny]
     def post(self, request, *args, **kwargs):
         # Generate a new access token using the refresh token from cookies.
+
         refresh_token = request.COOKIES.get("refreshToken")
         if not refresh_token:
             return Response(

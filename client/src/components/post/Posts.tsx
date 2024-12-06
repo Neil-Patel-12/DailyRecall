@@ -1,10 +1,10 @@
 // Posts.tsx
 import { useEffect, useState } from "react";
-import { PostSmProps } from "./Post";
+import { PostLg, PostSmProps } from "./Post";
 import { fetchPosts } from "@/actions/postAction";
 import { PostSm } from "./Post";
 
-export const PostList = () => {
+export const PostList = ({userId}: {userId?: number}) => {
   const [posts, setPosts] = useState<PostSmProps[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -24,13 +24,19 @@ export const PostList = () => {
   useEffect(() => {
     results();
   }, []);
+  
+  const filteredPosts = userId
+    ? posts.filter((post) => post.authorId === userId)
+    : posts;
 
   return (
     <div className="min-w-[775px] max-w-[800px] h-auto inline-flex flex-wrap justify-between px-2">
       {posts.length > 0 ? (
         <>
-          {posts.map((post: PostSmProps) => (
-            <PostSm key={post.id} post={parsePostSmResponse(post)} />
+          {filteredPosts.map((post: PostSmProps) => (
+            <PostLg>
+              <PostSm key={post?.id} post={parsePostSmResponse(post)} />
+            </PostLg>
           ))}
         </>
       ) : (
