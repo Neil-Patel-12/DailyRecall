@@ -54,16 +54,16 @@ class User_PostSerializer(serializers.ModelSerializer):
     class Meta:
         model = User_Post
         fields = [
-            'first_name',  # Include the user's first name
-            'last_name',   # Include the user's last name
-            'subject',
-            'id',
-            'title',
-            'confidence',
-            'content',
-            'author',
-            'date_posted',
-            'topic',
+            "first_name",  # Include the user's first name
+            "last_name",  # Include the user's last name
+            "subject",
+            "id",
+            "title",
+            "confidence",
+            "content",
+            "author",
+            "date_posted",
+            "topic",
         ]
         extra_kwargs = {"author": {"read_only": True}}
 

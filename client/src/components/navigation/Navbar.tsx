@@ -7,7 +7,7 @@ import logo from "/logo.png";
 import { MdOutlineAddBox } from "react-icons/md";
 import { Button } from "../ui/button";
 import { UserDropdown } from "./UserDropdown";
- 
+
 // Navbar component, displayed at top
 export const Navbar = ({ children }: { children?: ReactNode }) => {
   const { user } = useAuth();
@@ -41,7 +41,7 @@ export const Navbar = ({ children }: { children?: ReactNode }) => {
   );
 };
 
-// type definition for authentication button 
+// type definition for authentication button
 interface AuthButtonProps {
   label: string;
   path: string;
@@ -55,7 +55,7 @@ const buttons: AuthButtonProps[] = [
   },
   {
     label: "Login",
-    path: "/auth/login",  // path to login
+    path: "/auth/login", // path to login
   },
 ];
 

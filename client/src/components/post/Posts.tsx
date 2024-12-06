@@ -15,6 +15,12 @@ export const PostList = () => {
   const loadPosts = useCallback(async () => {
     if (isLoading || !hasMore) return;
 
+<<<<<<< HEAD
+=======
+    setPaginate(
+      total > page * paginateBy ? paginateBy : total - page * paginateBy,
+    );
+>>>>>>> 11063d2f1e4d6a5eabae7cdf22181e903ec46f43
     setIsLoading(true);
     try {
       console.log(`Fetching page ${page}...`);

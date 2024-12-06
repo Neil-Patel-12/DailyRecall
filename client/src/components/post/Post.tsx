@@ -14,7 +14,7 @@ export interface PostSmProps {
   subject: "Math" | "Science" | "History" | "Art" | "Misc";
 }
 
-const PostSm = ({post}: {post: PostSmProps}) => {
+const PostSm = ({ post }: { post: PostSmProps }) => {
   return (
     <Button className="min-w-[250px] max-w-[250px] min-h-[280px] max-h-[280px] hover:bg-accent active:brightness-100 p-0 my-4">
       <div className="flex relative shadow-md overflow-hidden transition duration-100 ease-in w-full h-full bg-[#ffb763] hover:bg-[#ffb763] hover:brightness-110 active:brightness-125 hover:-translate-x-2 hover:-translate-y-2">
@@ -31,7 +31,7 @@ const PostSm = ({post}: {post: PostSmProps}) => {
         </div>
         <div
           className={`${getColor(
-            post.confidence
+            post.confidence,
           )} flex absolute justify-center items-center translate-x-[110%] translate-y-5 rounded-full w-[8rem] h-[8rem] opacity-80 brightness-[75%] shadow-md self-end justify-self-end`}
         >
           <h1 className="top text-3xl font-bold text-blue-900">

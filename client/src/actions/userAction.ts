@@ -31,7 +31,7 @@ const auth = async (callback: () => Promise<void>) => {
       {},
       {
         withCredentials: true,
-      }
+      },
     );
     localStorage.removeItem("user");
     localStorage.removeItem("accessToken");
@@ -51,7 +51,7 @@ const checkAuth = async () => {
         {},
         {
           withCredentials: true,
-        }
+        },
       );
 
       const newAccessToken = response.data.accessToken;

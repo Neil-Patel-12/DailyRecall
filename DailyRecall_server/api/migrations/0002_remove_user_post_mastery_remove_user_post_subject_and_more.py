@@ -9,46 +9,89 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('api', '0001_initial'),
+        ("api", "0001_initial"),
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
     ]
 
     operations = [
         migrations.RemoveField(
-            model_name='user_post',
-            name='mastery',
+            model_name="user_post",
+            name="mastery",
         ),
         migrations.RemoveField(
-            model_name='user_post',
-            name='subject',
+            model_name="user_post",
+            name="subject",
         ),
         migrations.AddField(
-            model_name='user_post',
-            name='confidence',
-            field=models.IntegerField(default=5, validators=[django.core.validators.MinValueValidator(1), django.core.validators.MaxValueValidator(10)]),
+            model_name="user_post",
+            name="confidence",
+            field=models.IntegerField(
+                default=5,
+                validators=[
+                    django.core.validators.MinValueValidator(1),
+                    django.core.validators.MaxValueValidator(10),
+                ],
+            ),
         ),
         migrations.AddField(
-            model_name='user_post',
-            name='title',
+            model_name="user_post",
+            name="title",
             field=models.CharField(max_length=50, null=True),
         ),
         migrations.AlterField(
-            model_name='user_post',
-            name='author',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='post', to=settings.AUTH_USER_MODEL),
+            model_name="user_post",
+            name="author",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE,
+                related_name="post",
+                to=settings.AUTH_USER_MODEL,
+            ),
         ),
         migrations.CreateModel(
-            name='Topic',
+            name="Topic",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(max_length=50)),
-                ('subject', models.CharField(choices=[('m', 'Math'), ('s', 'Science'), ('a', 'Art'), ('h', 'History'), ('x', 'Misc')], default='x', help_text='choices one subject', max_length=1)),
-                ('author', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='topics', to=settings.AUTH_USER_MODEL)),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("name", models.CharField(max_length=50)),
+                (
+                    "subject",
+                    models.CharField(
+                        choices=[
+                            ("m", "Math"),
+                            ("s", "Science"),
+                            ("a", "Art"),
+                            ("h", "History"),
+                            ("x", "Misc"),
+                        ],
+                        default="x",
+                        help_text="choices one subject",
+                        max_length=1,
+                    ),
+                ),
+                (
+                    "author",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="topics",
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
             ],
         ),
         migrations.AlterField(
-            model_name='user_post',
-            name='topic',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='post', to='api.topic'),
+            model_name="user_post",
+            name="topic",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE,
+                related_name="post",
+                to="api.topic",
+            ),
         ),
     ]
