@@ -6,8 +6,6 @@ import { PostSm } from "./Post";
 
 export const PostList = ({ userId }: { userId?: number }) => {
   const [posts, setPosts] = useState<PostSmProps[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
 
   const results = async () => {
     try {
@@ -15,10 +13,7 @@ export const PostList = ({ userId }: { userId?: number }) => {
       setPosts(response.data);
     } catch (error) {
       console.error("Failed to fetch posts:", error);
-      setError("Failed to load posts.");
-    } finally {
-      setIsLoading(false);
-    }
+    } 
   };
 
   useEffect(() => {
